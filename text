@@ -15,56 +15,14 @@ className="mx-auto"
 951
 
 
-export default function WhySellOnAGS() {
-return (
-<section className="bg-white py-12 px-4 md:px-16">
-<div className="max-w-6xl mx-auto text-center">
-<h2 className="text-3xl font-bold mb-10">Why Sell on AGS?</h2>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-{/* Card 1 */}
-<div className="bg-blue-50 p-6 rounded-lg shadow hover:shadow-md transition">
-<div className="text-3xl mb-4">📡</div>
-<h3 className="text-xl font-semibold mb-2">Get Discovered by Thousands</h3>
-<p className="text-gray-600">
-AGS puts your products in front of real buyers across Nigeria and beyond.
-Whether you sell kaftans, accessories, or handmade software, we help you
-stand out. No tech skills needed. Just upload and start selling.
-</p>
-</div>
-
-{/* Card 2 */}
-<div className="bg-blue-50 p-6 rounded-lg shadow hover:shadow-md transition">
-<div className="text-3xl mb-4">🔒</div>
-<h3 className="text-xl font-semibold mb-2">Easy Setup & Local Support</h3>
-<p className="text-gray-600">
-No complicated dashboards. AGS is built for sellers in our community —
-simple tools, fast uploads, and a support team that speaks your language
-when you need help.
-</p>
-</div>
-
-{/* Card 3 */}
-<div className="bg-blue-50 p-6 rounded-lg shadow hover:shadow-md transition">
-<div className="text-3xl mb-4">⭐</div>
-<h3 className="text-xl font-semibold mb-2">Build Your Own Brand</h3>
-<p className="text-gray-600">
-Use your custom shop design, logos, and product layouts to build a unique
-brand your customers remember and trust.
-</p>
-</div>
-
-{/* Card 4 */}
-<div className="bg-blue-50 p-6 rounded-lg shadow hover:shadow-md transition">
-<div className="text-3xl mb-4">📊</div>
-<h3 className="text-xl font-semibold mb-2">Grow with Confidence</h3>
-<p className="text-gray-600">
-Backed by training, community support, and insights to help you scale from
-side hustle to full-time success.
-</p>
-</div>
-</div>
-</div>
-</section>
-);
-}
+              {/* Phone Image */}
+              <div className="w-full flex justify-center my-4">
+                <Image
+                  src="/mockup-phone.png"
+                  alt="Phone Preview"
+                  width={50}
+                  height={100}
+                  className="object-contain"
+                />
+              </div>

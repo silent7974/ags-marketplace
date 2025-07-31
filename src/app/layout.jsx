@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${montserrat.variable}`}>
       <body
-        className="bg-[#f8f9fa]"
+        className=" dark bg-[#f8f9fa]"
       > < Navbar />
         {children}
         
