@@ -1,8 +1,14 @@
-import FaqDropdown from '@/app/components/FaqDropdown';
-import Footer from '@/app/components/Footer';
+'use client'
+
+import FaqDropdown from '@/app/components/FaqDropdown'
+import Footer from '@/app/components/Footer'
+import SignUpModal from '@/app/components/SignupModal'
 import Image from 'next/image'
+import { useState } from 'react'
 
 export default function SellerIndexPage() {
+  const [modalOpen, setModalOpen] = useState(false)
+  
   return (
     <div className="min-h-screen bg-[#E8F0F1]">
       {/* Nav */}
@@ -31,7 +37,9 @@ export default function SellerIndexPage() {
           <button className="text-white text-[16px] font-semibold font-[Inter] px-2 py-2 rounded-[8px]">
             Sign In
           </button>
-          <button className="bg-[#2A9CBC] text-white text-[16px] font-semibold font-[Inter] px-2 py-2 rounded-[8px]">
+          <button 
+          onClick={() => setModalOpen(true)}
+          className="bg-[#2A9CBC] text-white text-[16px] font-semibold font-[Inter] px-2 py-2 rounded-[8px]">
             Sign Up
           </button>
         </div>
@@ -62,7 +70,9 @@ export default function SellerIndexPage() {
                 </p>
 
                 {/* Sign Up Button */}
-                <button className="bg-[#2A9CBC] text-white text-[16px] font-semibold font-[Inter] px-2 py-2 rounded-[8px]">
+                <button 
+                onClick={() => setModalOpen(true)}
+                className="bg-[#2A9CBC] text-white text-[16px] font-semibold font-[Inter] px-2 py-2 rounded-[8px]">
                 Sign Up
                 </button>
             </div>
@@ -208,6 +218,9 @@ export default function SellerIndexPage() {
       </main>
 
       <Footer />
+
+      {/* Modal Component */}
+      <SignUpModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
-  );
+  )
 }

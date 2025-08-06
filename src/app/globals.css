@@ -3,3 +3,18 @@
 .hero-gradient {
   background: linear-gradient(0deg, #34BCE4 0%, #101010 40%, #101010 100%);
 }
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 0.4s ease-out forwards;
+}
