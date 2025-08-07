@@ -15,7 +15,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "AGS Marketplace",
-  description: "AGS is a curated e-commerce built for rising fashion and lifestyle brands. Offering buyers a trusted space to discover quality, handcrafted and exclusive products. With premium storefronts, secure payments, and real cusomer support, AGS makes shopping feel personal and selling feel professional - all from one simple, elegant platform.",
+  description: "AGS is a curated e-commerce built for rising fashion and lifestyle brands. Offering buyers a trusted space to discover quality, handcrafted and exclusive products. With premium storefronts, secure payments, and real customer support, AGS makes shopping feel personal and selling feel professional - all from one simple, elegant platform.",
   icons: {
     icon: "/ags-logo.svg",
     shortcut: "/ags-logo.svg",
