@@ -34,13 +34,13 @@ export default function SignUpModal({ isOpen, onClose }) {
         {/* Options */}
         <div className="flex flex-col gap-4">
           <button
-            onClick={() => router.push('/seller/signup/normal')}
+            onClick={() => router.push('/seller/normal/signup')}
             className="w-full py-3 bg-[#005770] text-white rounded-[8px] font-[Montserrat] text-[14px] font-semibold"
           >
             Normal Seller
           </button>
           <button
-            onClick={() => router.push('/seller/signup/premium')}
+            onClick={() => router.push('/seller/premium/signup')}
             className="w-full py-3 bg-[#2A9CBC] text-white rounded-[8px] font-[Montserrat] text-[14px] font-semibold"
           >
             Premium Seller

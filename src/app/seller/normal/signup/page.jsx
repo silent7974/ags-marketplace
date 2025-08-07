@@ -3,8 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check } from 'lucide-react'
-import ProductCategoryDropdown from '@/app/components/ProductCategoryDropdown'
-import SuccessModal from '@/app/components/SuccessModal'
+import ProductCategoryDropdown from '../../components/ProductCategoryDropdown'
+import SuccessModal from '../../components/SuccessModal'
 
 export default function SellerSignUpNormal() {
     const router = useRouter()
@@ -122,7 +122,7 @@ export default function SellerSignUpNormal() {
         >
           {/* Back Button */}
           <div className="ml-[2px]">
-            <button onClick={() => router.push('/seller/index')}>
+            <button onClick={() => router.push('/seller')}>
               <ChevronLeft size={24} color="#000000" />
             </button>
           </div>
@@ -301,7 +301,7 @@ export default function SellerSignUpNormal() {
           {/* Line 2: Apply as Premium Seller */}
           <p className="text-[12px] font-[Inter] font-semibold text-black text-center">
             Want a full branded store?{' '}
-            <a href="/seller/premium/signup" className="text-[#005770]">
+            <a href="/seller/signup" className="text-[#005770]">
               Apply as Premium Seller
             </a>
           </p>

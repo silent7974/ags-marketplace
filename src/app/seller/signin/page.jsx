@@ -63,7 +63,7 @@ export default function SellerSignInPage() {
   return (
     <div className="w-full px-[16px] py-[40px]">
       {/* Go Back */}
-      <button onClick={() => router.push('/seller/index')} className="mb-4">
+      <button onClick={() => router.push('/seller')} className="mb-4">
         <ChevronLeft size={24} className="text-black" />
       </button>
 
