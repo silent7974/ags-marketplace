@@ -1,6 +1,7 @@
 import { Montserrat, Inter } from "next/font/google"
 import "./globals.css"
 import MobileOnlyWrapper from "./components/MobileWrapper"
+import ReduxProvider from "@/redux/ReduxProvider"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -29,9 +30,11 @@ export default function RootLayout({ children }) {
       <body
         className=" bg-[#f8f9fa]"
       >
-        <MobileOnlyWrapper>
-          {children}
-        </MobileOnlyWrapper>
+        <ReduxProvider>
+          <MobileOnlyWrapper>
+            {children}
+          </MobileOnlyWrapper>
+        </ReduxProvider>
       </body>
     </html>
   )

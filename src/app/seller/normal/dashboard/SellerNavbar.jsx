@@ -37,7 +37,7 @@ export default function SellerNavbar({ firstName }) {
         />
         <div
           className="w-[32px] h-[32px] rounded-full border-[2px] border-[#005770] flex items-center justify-center cursor-pointer"
-          onClick={() => window.location.href = '/seller/normal/settings'}
+          onClick={() => window.location.href = '/seller/normal/dashboard/settings'}
         >
           <UserRound size={24} color="#000000" />
         </div>
@@ -48,5 +48,5 @@ export default function SellerNavbar({ firstName }) {
         <MenuModal onClose={() => setIsMenuOpen(false)} />
       )}
     </nav>
-  );
+  )
 }

@@ -64,7 +64,7 @@ export default function MenuModal({ onClose }) {
         {/* Settings */}
         <button
           onClick={() => {
-            router.push('/seller/normal/settings');
+            router.push('/seller/normal/dashboard/settings');
             onClose();
           }}
           className="w-full flex items-center gap-[12px] py-[12px] text-white/60"
