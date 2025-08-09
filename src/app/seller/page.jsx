@@ -1,7 +1,6 @@
 'use client'
 
 import FaqDropdown from '@/app/seller/components/FaqDropdown'
-import Footer from '@/app/components/Footer'
 import SignUpModal from '@/app/seller/components/SignupModal'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -221,8 +220,6 @@ export default function SellerIndexPage() {
           <FaqDropdown />
         </div>
       </main>
-
-      <Footer />
 
       {/* Modal Component */}
       <SignUpModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />

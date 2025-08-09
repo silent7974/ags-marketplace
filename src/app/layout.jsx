@@ -1,6 +1,7 @@
 import { Montserrat, Inter } from "next/font/google"
 import "./globals.css"
 import MobileOnlyWrapper from "./components/MobileWrapper"
+import Footer from "./components/Footers"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         <MobileOnlyWrapper>
           {children}
         </MobileOnlyWrapper>
+        <Footer />
       </body>
     </html>
   )
