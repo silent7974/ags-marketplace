@@ -1,7 +1,7 @@
 'use client';
 
-import { X, Home, Package, Wallet, BarChart4, LifeBuoy, Settings, LogOut, Folders } from 'lucide-react';
-import { useRouter, usePathname } from 'next/navigation';
+import { X, Home, Package, Wallet, BarChart4, LifeBuoy, Settings, LogOut, Folders } from 'lucide-react'
+import { useRouter, usePathname } from 'next/navigation'
 
 export default function MenuModal({ onClose }) {
   const router = useRouter();

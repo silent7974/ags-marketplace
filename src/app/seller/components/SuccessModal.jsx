@@ -17,7 +17,7 @@ export default function SuccessModal({ onClose }) {
           You’re now part of AGS. Sign in to start selling and growing.
         </p>
         <button
-          onClick={() => router.push('/seller/signin/normal')}
+          onClick={() => router.push('/seller/signin')}
           className="bg-[#005770] text-white text-sm font-semibold px-4 py-2 rounded"
         >
           Sign In

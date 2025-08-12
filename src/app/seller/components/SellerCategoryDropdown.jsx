@@ -1,14 +1,13 @@
-
+'use client'
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 
-export default function ProductCategoryDropdown({ selected, onSelect }) {
+export default function SellerCategoryDropdown({ selected, onSelect }) {
   const categories = [
-    "Men's Clothing", "Women's Clothing", "Men's Shoes", "Women's Shoes",
-    "Women's Lingerie and Lounge", "Men's Underwear and Sleepwear",
-    "Sports and Outdoors", "Jewelry and Accessories", "Beauty and Health",
-    "Toys and Games", "Kid's Fashion", "Baby & Maternity",
-    "Electronics", "Smart Home", "Furniture", "Bags and Luggage"
+    "Men's Fashion", "Women's Fashion", "Unisex Fashion", "Fabrics & Materials",
+    "Accessories", "Beauty & Personal Care",
+    "Home & Lifestyle", "Gift Shops", "Kids Fashion",
+    "Art & Custom Crafts", "Kid's Fashion", "Electronics & Gadgets", "Baby & Maternity"
   ];
 
   const [openModal, setOpenModal] = useState(false)

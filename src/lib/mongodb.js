@@ -1,26 +1,21 @@
-import { MongoClient } from 'mongodb'
+import mongoose from "mongoose";
 
-const uri = process.env.MONGODB_URI;  
-const options = {};
+const MONGODB_URI = process.env.MONGODB_URI;
 
-let client;
-let clientPromise;
-
-if (!process.env.MONGODB_URI) {
-  throw new Error("Please add your MongoDB URI to .env")
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable inside .env");
 }
 
-if (process.env.NODE_ENV === "development") {
-  // In dev, use a global variable for hot reloads
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    global._mongoClientPromise = client.connect()
-  }
-  clientPromise = global._mongoClientPromise;
-} else {
-  // In production, don't use global
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
-}
+let isConnected = false; // Track connection
 
-export default clientPromise;
+export default async function dbConnect() {
+  if (isConnected) return;
+
+  const db = await mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  isConnected = db.connections[0].readyState;
+  console.log("✅ MongoDB connected");
+}

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check } from 'lucide-react'
-import ProductCategoryDropdown from '../../components/ProductCategoryDropdown'
+import SellerCategoryDropdown from '../../components/SellerCategoryDropdown'
 import SuccessModal from '../../components/SuccessModal'
 
 export default function SellerSignUpNormal() {
@@ -249,7 +249,7 @@ export default function SellerSignUpNormal() {
             <p className="text-[8px] text-red-500 mt-[4px]">{errors.confirmPassword}</p>
           )}
 
-          <ProductCategoryDropdown 
+          <SellerCategoryDropdown 
             selected={form.category}
             onSelect={setCategory}
             hasError={!!errors.category}

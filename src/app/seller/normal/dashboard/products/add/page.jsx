@@ -1,9 +1,8 @@
-'use client'
+import AddProductLayout from '@/app/seller/components/AddProductPageLayout'
+import { getCategoryFromCookie } from '@/lib/getCategoryFromCookie'
 
-import React from 'react'
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
+export default async function AddProductPageWrapper() {
+    const category = await getCategoryFromCookie()
+    return <AddProductLayout category={category} />
 }
