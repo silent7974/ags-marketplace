@@ -6,6 +6,7 @@ import Product from "@/models/product";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// POST create a new product
 export async function POST(req) {
   try {
     const cookieStore = await cookies();
@@ -28,6 +29,8 @@ export async function POST(req) {
       productName,
       description,
       price,
+      discountedPrice,
+      formattedPrice,
       quantity,
       discount = 0,
       productCategory,
@@ -56,6 +59,8 @@ export async function POST(req) {
       productName: productName.trim(),
       description: description?.trim() || "",
       price,
+      formattedPrice,
+      discountedPrice,
       quantity,
       discount,
       category: productCategory.trim(),
@@ -68,14 +73,28 @@ export async function POST(req) {
       images,
     };
 
+    console.log("SUBMITTING:", productDoc)
+
     const created = await Product.create(productDoc);
 
     return NextResponse.json(
       { message: "Product added successfully", product: created },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (err) {
     console.error("Add Product Error:", err);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
+// GET all products
+export async function GET() {
+  try {
+    await dbConnect();
+    const products = await Product.find({});
+    return NextResponse.json(products);
+  } catch (err) {
+    console.error("Get Products Error:", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

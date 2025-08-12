@@ -78,7 +78,7 @@ export default function AddProductLayout({ category }) {
     productCategory: '',
     price: 0,
     discountedPrice: 0,
-    formattedPrice: 0,
+    formattedPrice: '',
     quantity: 0,
     discount: 0,
     description: '',
@@ -95,8 +95,6 @@ export default function AddProductLayout({ category }) {
   }
 
   const [variantColumns, setVariantColumns] = useState([])
-
-  console.log('variants:', variants)
 
   // RTK Query mutation hook
   const [addProduct, { isLoading, isSuccess, isError, error }] = useAddProductMutation()
