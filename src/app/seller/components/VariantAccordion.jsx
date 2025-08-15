@@ -354,7 +354,7 @@ export default function VariantAccordion({
                     </td>
 
                     {/* variant columns cells */}
-                    {variantColumns.map((col, colIndex) => (
+                    {Array.isArray(variantColumns) && variantColumns.map((col, colIndex) => (
                       <td key={colIndex} className="px-3 py-2 align-top border-b" style={{ borderColor: 'rgba(24,51,27,0.5)', borderWidth: '0.5px' }}>
                         {/* render control depending on row.type */}
                         {row.type === 'select' && (row.key === 'color' ? (

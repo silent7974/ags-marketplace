@@ -70,7 +70,8 @@ export default function ProductsOverview() {
           return (
             <div
               key={product._id}
-              className={`relative w-[168px] h-[248px] rounded-[8px] overflow-hidden bg-gray-900 flex flex-col justify-end py-[16px] ${marginTop}`}
+              onClick={() => router.push(`/seller/normal/dashboard/products/edit/${product._id}`)}
+              className={`relative w-[168px] h-[248px] rounded-[8px] overflow-hidden bg-gray-900 flex flex-col justify-end py-[16px] cursor-pointer ${marginTop}`}
             >
               {/* Product image */}
               {firstImage ? (

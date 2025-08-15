@@ -218,10 +218,13 @@ export default function AddProductLayout({ category }) {
       >
         <span className="font-inter font-semibold text-[12px] text-white">Save Product</span>
 
-        {/* Inline simple thumbs-up SVG */}
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" viewBox="0 0 24 24" stroke="none">
-          <path d="M2 21h4V9H2v12zM23 10c0-1.104-.896-2-2-2h-6.586l.293-1.293a.999.999 0 0 0-.293-.707L12 4 7 9v12h11c1.104 0 2-.896 2-2v-9z" />
-        </svg>
+        {/* Simple thumbs-up SVG */}
+        <img
+            src="/thumbs-up.svg"
+            alt="Thumbs up"
+            width={16}
+            height={16}
+        />
       </button>
 
       {/* Error or Success Messages */}

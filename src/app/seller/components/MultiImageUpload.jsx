@@ -3,10 +3,10 @@
 import { useRef, useState } from 'react'
 
 export default function MultiImageUpload({
-  productImages,
-  onImageChange,
-  onAddImage,
-  onRemoveImage,
+  productImages = [],
+  onImageChange = () => {},
+  onAddImage = () => {},
+  onRemoveImage = () => {},
 }) {
   const [mainIndex, setMainIndex] = useState(0)
   const fileInputRef = useRef(null)

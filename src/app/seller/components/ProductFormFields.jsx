@@ -159,7 +159,7 @@ export default function ProductFormFields({
   setProductCategory,
   subcategory,
   setSubcategory,
-  variants,
+  variants = [0],
   setVariants,
   useCase,
   setUseCase,
@@ -191,6 +191,10 @@ export default function ProductFormFields({
         selected={productCategory}
         onSelect={(val) => {
           setProductCategory(val)
+          if (changed) {
+            setSubcategory('')
+            setVariants({})
+          }
           setSubcategory('')
           setVariants({})
         }}
@@ -215,7 +219,10 @@ export default function ProductFormFields({
               label="Size"
               placeholder="Select size"
               options={v.sizes}
-              selected={variants.size}
+              selected={Array.isArray(variants.size)
+                ? variants.size.join(', ')
+                : variants.size
+              }
               onSelect={(val) => setVariants({ ...variants, size: val })}
             />
           )}
@@ -241,7 +248,11 @@ export default function ProductFormFields({
               label="Memory"
               placeholder="Select memory"
               options={v.memory}
-              selected={variants.memory}
+              selected={
+                Array.isArray(variants.memory)
+                  ? variants.memory.join(', ')
+                  : variants.memory
+              }
               onSelect={(val) => setVariants({ ...variants, memory: val })}
             />
           )}
@@ -251,14 +262,20 @@ export default function ProductFormFields({
               label="RAM"
               placeholder="Select RAM"
               options={v.ram}
-              selected={variants.ram}
+              selected={
+                Array.isArray(variants.ram) ? variants.ram.join(', ') : variants.ram
+              }
               onSelect={(val) => setVariants({ ...variants, ram: val })}
             />
           )}
 
           {v.colors && (
             <ColorDropdown
-              selected={variants.color}
+              selected={
+                Array.isArray(variants.color)
+                  ? variants.color.join(', ')
+                  : variants.color
+              }
               onSelect={(val) => setVariants({ ...variants, color: val })}
             />
           )}
