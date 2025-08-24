@@ -87,11 +87,27 @@ export async function POST(req) {
   }
 }
 
-// GET all products
+// GET seller's own products
 export async function GET() {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("sellerToken")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
     await dbConnect();
-    const products = await Product.find({});
+
+    // Fetch only products belonging to this seller
+    const products = await Product.find({ sellerId: decoded.id });
+
     return NextResponse.json(products);
   } catch (err) {
     console.error("Get Products Error:", err);

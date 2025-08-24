@@ -1,13 +1,15 @@
-'use client';
+'use client'
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { UserRound } from 'lucide-react';
+import { useSelector } from "react-redux";
 import MenuModal from '../../components/MenuModal';
 
-
-export default function SellerNavbar({ firstName }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+export default function SellerNavbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  const { fullName, profileImage } = useSelector((state) => state.sellerProfile);
+  const firstName = fullName ? fullName.split(' ')[0] : "Seller";
 
   return (
     <nav className="flex justify-between items-center py-4">
@@ -36,10 +38,16 @@ export default function SellerNavbar({ firstName }) {
           className="cursor-pointer"
         />
         <div
-          className="w-[32px] h-[32px] rounded-full border-[2px] border-[#005770] flex items-center justify-center cursor-pointer"
+          className="w-[32px] h-[32px] rounded-full flex items-center justify-center cursor-pointer"
           onClick={() => window.location.href = '/seller/normal/dashboard/settings'}
         >
-          <UserRound size={24} color="#000000" />
+          <Image
+            src={profileImage || "/profile.svg"}
+            alt="Profile"
+            width={32}
+            height={32}
+            className="w-[32px] h-[32px] object-cover rounded-full"
+          />
         </div>
       </div>
 
@@ -48,5 +56,5 @@ export default function SellerNavbar({ firstName }) {
         <MenuModal onClose={() => setIsMenuOpen(false)} />
       )}
     </nav>
-  )
+  );
 }

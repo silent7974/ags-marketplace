@@ -24,10 +24,7 @@ export async function POST(req) {
 
     const token = jwt.sign(
       {
-        id: seller._id.toString(),
-        name: seller.fullName,
-        type: seller.sellerType,
-        category: seller.category
+        id: seller._id.toString()
       },
       JWT_SECRET,
       { expiresIn: "7d" }

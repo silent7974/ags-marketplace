@@ -1,30 +1,55 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+// store/sellerApi.js
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const sellerApi = createApi({
-  reducerPath: 'sellerApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: '/api/seller', // backend route for sellers
-    credentials: 'include',
-  }),
-  tagTypes: ['Products', 'Orders', 'Profile'], // for cache invalidation
+  reducerPath: "sellerApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/seller" }),
   endpoints: (builder) => ({
-    getProducts: builder.query({
-      query: () => '/products',
-      providesTags: ['Products'],
-    }),
-    addProduct: builder.mutation({
-      query: (productData) => ({
-        url: '/products',
-        method: 'POST',
-        body: productData,
+    signup: builder.mutation({
+      query: (payload) => ({
+        url: "/signup",
+        method: "POST",
+        body: payload,
       }),
-      invalidatesTags: ['Products'],
     }),
-    // more endpoints coming...
+    signin: builder.mutation({
+      query: (payload) => ({
+        url: "/signin",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    getProfile: builder.query({
+      query: () => "/profile",
+    }),
+    updateProfile: builder.mutation({
+      query: (payload) => ({
+        url: "/profile",
+        method: "PUT",
+        body: payload,
+      }),
+    }),
+    updatePassword: builder.mutation({
+      query: (payload) => ({
+        url: "/profile/password",
+        method: "PATCH",
+        body: payload,
+      }),
+    }),
+    deleteAccount: builder.mutation({
+      query: () => ({
+        url: "/profile",
+        method: "DELETE",
+      }),
+    }),
   }),
-})
+});
 
 export const {
-  useGetProductsQuery,
-  useAddProductMutation,
-} = sellerApi
+  useSignupMutation,
+  useSigninMutation,
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+  useUpdatePasswordMutation,
+  useDeleteAccountMutation,
+} = sellerApi;

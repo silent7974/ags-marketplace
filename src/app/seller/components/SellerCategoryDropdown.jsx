@@ -36,14 +36,14 @@ export default function SellerCategoryDropdown({ selected, onSelect }) {
       {/* Dropdown Modal */}
       {openModal && (
         <div
-          className="fixed inset-0 bg-black/50 flex justify-center items-end z-50"
+          className="fixed inset-0 bg-black/50 flex justify-center items-end z-50 "
           onClick={() => setOpenModal(false)}
         >
           <div
-            className="bg-white w-full rounded-t-[16px] max-h-[60vh] overflow-y-auto px-[16px] py-[16px]"
+            className="bg-white w-full rounded-t-[16px] max-h-[60vh] overflow-y-auto scrollbar-hide px-[16px] py-[36px]"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-[14px] font-[Inter] font-semibold mb-[8px]">
+            <h2 className="text-[14px] text-center font-[Inter] font-semibold mb-[16px]">
               Select Product Category
             </h2>
             <div className="flex flex-col gap-[8px]">

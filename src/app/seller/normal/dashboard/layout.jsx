@@ -1,13 +1,15 @@
-import { getFirstNameFromCookie } from '@/lib/getFirstName'
-import SellerNavbar from './SellerNavbar'
+"use client"
 
-export default async function DashboardLayout({ children }) {
-  const firstName = await getFirstNameFromCookie()
+import { usePathname } from "next/navigation"
+import SellerNavbar from "./SellerNavbar"
 
+export default function DashboardLayout({ children }) {
+    const pathname = usePathname();
+    const hideNavbar = pathname.includes("/settings")
   return (
-    <div className="min-h-screen bg-[#f8f9fa] px-4 py-[40px]">
-      <SellerNavbar firstName={firstName} />
-      {children} {/* This line was missing */}
+    <div className="flex flex-col min-h-screen px-[16px] py-[40px]">
+      {!hideNavbar && <SellerNavbar />}
+      <main className="flex-1">{children}</main>
     </div>
-  )
+  );
 }

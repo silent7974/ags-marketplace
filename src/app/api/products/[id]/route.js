@@ -17,10 +17,10 @@ export async function PUT(req, { params }) {
   const { id } = params;
 
   try {
-    const body = await req.json();
+    const body = await req.json()
 
     // Find current product
-    const existingProduct = await Product.findById(id);
+    const existingProduct = await Product.findById(id)
     if (!existingProduct) {
       return new Response(JSON.stringify({ message: "Product not found" }), { status: 404 });
     }

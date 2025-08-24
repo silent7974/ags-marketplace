@@ -1,11 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation';
-import { ChevronLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation'
+import { ChevronLeft } from 'lucide-react'
+import { useState } from 'react'
+import { useSigninMutation } from "@/redux/services/sellerApi"
 
 export default function SellerSignInPage() {
   const router = useRouter()
+  const [signin, { isLoading, error }] = useSigninMutation();
   const [form, setForm] = useState({ email: '', password: '' })
 
   const [errors, setErrors] = useState({})
@@ -38,25 +40,10 @@ export default function SellerSignInPage() {
     setServerError(null)
 
     try {
-        const res = await fetch('/api/seller/signin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          console.log('Signup Successful:', data);
-          router.push("/seller/normal/dashboard")
-        } else {
-          setServerError(data.message || 'Sign In failed. Try again.');
-        }
+      await signin(form).unwrap();
+      router.push("/seller/normal/dashboard");
     } catch (err) {
-        setServerError('Network error. Please try again later.');
-        console.error('API error:', err);
-    } finally {
-        setLoading(false);
+      console.error("Signin failed:", err);
     }
   }
 
@@ -111,9 +98,10 @@ export default function SellerSignInPage() {
         {/* Sign In Button */}
         <button
           type="submit"
+          disabled={isLoading}
           className="w-full mt-[24px] bg-[#005770] text-white text-[12px] font-[Inter] font-semibold py-[12px] rounded-[4px]"
         >
-          {loading ? 'Signing in...' : 'Sign In'}
+          {isLoading ? "Signing in..." : "Sign In"}
         </button>
       </form>
 
@@ -130,10 +118,9 @@ export default function SellerSignInPage() {
         </button>
       </p>
 
-      {serverError && (
-        <p className="mt-[8px] text-[8px] text-red-500 text-center">{serverError}</p>
+      {error && (
+        <p className="mt-[8px] text-[8px] text-red-500 text-center">{error.data?.message || "Signin failed"}</p>
       )}
-
 
       {/* Separator */}
       <div className="h-[2px] bg-black/10 mt-11 mb-6"></div>

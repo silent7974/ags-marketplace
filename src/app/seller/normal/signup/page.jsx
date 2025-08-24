@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check } from 'lucide-react'
 import SellerCategoryDropdown from '../../components/SellerCategoryDropdown'
 import SuccessModal from '../../components/SuccessModal'
+import { useSignupMutation  } from "@/redux/services/sellerApi"
 
 export default function SellerSignUpNormal() {
     const router = useRouter()
+     const [signup, { isLoading, error }] = useSignupMutation()
 
     const [form, setForm] = useState({
         fullName: '',
@@ -16,7 +18,7 @@ export default function SellerSignUpNormal() {
         password: '',
         confirmPassword: '',
         category: '',
-        sellerType: "normal" 
+        sellerType: "normal_seller" 
     })
 
     const [errors, setErrors] = useState({})
@@ -85,26 +87,11 @@ export default function SellerSignUpNormal() {
       setServerError(null);
 
       try {
-        const res = await fetch('/api/seller/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(form),
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          console.log('Registration successful:', data);
-          setShowSuccessModal(true)
-        } else {
-          setServerError(data.message || 'Registration failed. Try again.');
-        }
-      } catch (err) {
-        setServerError('Network error. Please try again later.');
-        console.error('API error:', err);
-      } finally {
-        setLoading(false);
-      }
+      await signup(form).unwrap(); // unwrap gives raw response or throws
+      setShowSuccessModal(true)
+    } catch (err) {
+      console.error("Signup failed:", err)
+    }
     };
 
     // Custom setter for category
@@ -261,10 +248,10 @@ export default function SellerSignUpNormal() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={isLoading}
             className="w-full mt-[24px] bg-[#005770] text-white text-[12px] font-[Inter] font-semibold py-[12px] rounded-[4px]"
           >
-            {loading ? 'Creating account...' : 'Create my seller account'}
+            {isLoading ? 'Creating account...' : 'Create my seller account'}
           </button>
         </form>
 
@@ -282,8 +269,8 @@ export default function SellerSignUpNormal() {
           </button>
         </p>
 
-        {serverError && (
-          <p className="mt-[8px] text-[8px] text-red-500 text-center">{serverError}</p>
+        {error && (
+          <p className="mt-[8px] text-[8px] text-red-500 text-center">{error.data?.message || "Signup failed"}</p>
         )}
 
         <div className="mt-[44px] flex flex-col items-center gap-[24px]">

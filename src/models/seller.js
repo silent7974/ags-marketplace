@@ -1,5 +1,4 @@
-// models/Seller.js
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 
 const SellerSchema = new mongoose.Schema(
   {
@@ -8,6 +7,14 @@ const SellerSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     passwordHash: { type: String, required: true },
     category: { type: String, required: true },
+    profileImage: {
+      type: String, // store Cloudinary or S3 URL
+      default: "",  // blank until user uploads
+    },
+    notificationsEnabled: {
+      type: Boolean,
+      default: false,
+    },
     sellerType: { type: String, enum: ["normal_seller", "premium_seller"], default: "normal_seller" }
   },
   { timestamps: true }
