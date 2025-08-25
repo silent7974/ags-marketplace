@@ -2,6 +2,8 @@ import { Montserrat, Inter } from "next/font/google"
 import "./globals.css"
 import MobileOnlyWrapper from "./components/MobileWrapper"
 import ReduxProvider from "@/redux/ReduxProvider"
+import Navbar from "./components/Navbar"
+import Footer from "./components/Footer"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -32,7 +34,9 @@ export default function RootLayout({ children }) {
       >
         <ReduxProvider>
           <MobileOnlyWrapper>
+            <Navbar />
             {children}
+            <Footer />
           </MobileOnlyWrapper>
         </ReduxProvider>
       </body>
