@@ -8,7 +8,6 @@ import { useState } from "react"
 import SearchModal from "./SearchModal"
 import ProfileModal from "./ProfileModal"
 
-
 export default function Navbar() {
   const pathname = usePathname()
   const [showProfile, setShowProfile] = useState(false)
