@@ -14,7 +14,7 @@ export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false)
 
   return (
-    <nav className="w-full flex flex-col px-[16px] pt-[40px]">
+    <nav className="w-full flex flex-col px-[16px]">
       {/* Top row - Hamburger, Logo, Icons */}
       <div className="flex items-center justify-between w-full">
         {/* Left - Hamburger & Logo */}

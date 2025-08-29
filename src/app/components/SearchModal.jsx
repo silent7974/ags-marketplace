@@ -5,7 +5,7 @@ import { useState } from "react"
 import { X, ChevronLeft, Search } from "lucide-react"
 import Image from "next/image"
 
-export default function SearchModal({ isOpen, onClose }) {
+export default function SearchModal({ onClose }) {
   const [query, setQuery] = useState("")
 
   // Mock results for now
@@ -23,7 +23,7 @@ export default function SearchModal({ isOpen, onClose }) {
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
           className="fixed inset-0 bg-white z-50 px-4 pt-4 flex flex-col"
         >
           {/* Header */}
