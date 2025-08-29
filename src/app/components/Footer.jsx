@@ -1,21 +1,20 @@
-import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
   return (
     <>
-      <div>
         {/* Footer Section */}
-        <div className="bg-[#f8f9fa] text-gray-700 text-sm mt-8">
+        <div>
           {/* Dropdown Sections */}
-          <div className="divide-y divide-gray-300 border rounded-xl overflow-hidden">
+          <div className="text-black font-[montserrat] font-medium text-[12px] mt-[16px]">
             {/* Company Info */}
-            <details className="group px-6 py-4 cursor-pointer">
-              <summary className="flex justify-between items-center font-medium">
+            <details className="group border-b border-black/10 cursor-pointer">
+              <summary className="flex justify-between w-full px-[16px] h-[36px] items-center font-medium">
                 Company Info
                 <svg
-                  className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform"
+                  className="w-[12px] h-[12px] text-black/50 group-open:rotate-180 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -28,11 +27,11 @@ export default function Footer() {
                   />
                 </svg>
               </summary>
-              <ul className="mt-2 space-y-1 text-gray-600">
+              <ul className="bg-[#F2F2F2] px-[16px] py-[8px] space-y-[8px] font-[inter] font-normal text-[12px] text-black">
                 <li>
-                  About AGS{" "}
-                  <span className="text-gray-400">
-                    (AGS - Your Market Place. Your Hustle. Your rules.)
+                  About AGS{" "} <br/>
+                  <span className="font-light text-black/50">
+                    AGS - Your Market Place. Your Hustle. Your rules.
                   </span>
                 </li>
                 <li>Careers</li>
@@ -43,11 +42,11 @@ export default function Footer() {
             </details>
 
             {/* Customer Service */}
-            <details className="group px-6 py-4 cursor-pointer">
-              <summary className="flex justify-between items-center font-medium">
+            <details className="group border-b border-black/10 cursor-pointer">
+              <summary className="flex w-full px-[16px] h-[36px] justify-between items-center font-medium">
                 Customer Service
                 <svg
-                  className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform"
+                  className="w-[12px] h-[12px] text-black/50 group-open:rotate-180 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -60,7 +59,7 @@ export default function Footer() {
                   />
                 </svg>
               </summary>
-              <ul className="mt-2 space-y-1 text-gray-600">
+              <ul className="bg-[#F2F2F2] px-[16px] py-[8px] space-y-[8px] font-[inter] font-normal text-[12px] text-black">
                 <li>Return and Refund Policy</li>
                 <li>Intellectual Property Policy</li>
                 <li>Shipping Info</li>
@@ -69,11 +68,11 @@ export default function Footer() {
             </details>
 
             {/* Help */}
-            <details className="group px-6 py-4 cursor-pointer">
-              <summary className="flex justify-between items-center font-medium">
+            <details className="group border-b border-black/10 cursor-pointer">
+              <summary className="flex w-full px-[16px] h-[36px] justify-between items-center font-medium">
                 Help
                 <svg
-                  className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform"
+                  className="w-[12px] h-[12px] text-black/50 group-open:rotate-180 transition-transform"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -86,7 +85,7 @@ export default function Footer() {
                   />
                 </svg>
               </summary>
-              <ul className="mt-2 space-y-1 text-gray-600">
+              <ul className="bg-[#F2F2F2] px-[16px] py-[8px] space-y-[8px] font-[inter] font-normal text-[12px] text-black">
                 <li>Support center & FAQ</li>
                 <li>Safety center</li>
                 <li>AGS purchase protection</li>
@@ -96,47 +95,47 @@ export default function Footer() {
             </details>
           </div>
 
-          {/* Space before Social Icons */}
-          <div
-            className="p-4 mt-6 flex justify-center items-center gap-[56px]"
-            style={{ width: "304px", margin: "0 auto" }}
-          >
-            <Link href="#">
-              <Instagram size={20} />
-            </Link>
-            <Link href="#">
-              <Facebook size={20} />
-            </Link>
-            <Link href="#">
-              <Twitter size={20} />
-            </Link>
-            <Link href="#">
-              <Youtube size={20} />
-            </Link>
-          </div>
-
-          {/* Footer Bottom */}
-          <div className="text-center mt-4">
-            <p>© 2025 Aliki Global Services™. All rights reserved.</p>
-            <div className="mt-2 space-x-4">
-              <Link href="/terms" className="underline">
-                Terms of use
-              </Link>
-              <Link href="/privacy" className="underline">
-                Privacy Policy
-              </Link>
-              <Link href="/ad-choices" className="underline">
-                Ad Choices
-              </Link>
-              <Link href="/privacy-choices" className="underline">
-                Your privacy choices
-              </Link>
+          {/* Second part of footer */}
+          <div className="bg-[#EEEEEE] py-[16px]">
+            <div className="flex justify-center items-center gap-[48px]">
+              <Image src="/instagram.svg" alt="Instagram" width={16} height={16} />
+              <Image src="/facebook.svg" alt="Facebook" width={16} height={16} />
+              <Image src="/twitter.svg" alt="Twitter" width={16} height={16} />
+              <Image src="/tiktok.svg" alt="TikTok" width={16} height={16} />
+              <Image src="/youtube.svg" alt="Youtube" width={16} height={12} />
             </div>
+
+            <div className="font-[inter] text-[12px] font-light text-[#7B7979] text-center mt-[24px]">
+              <p>© 2025 Aliki Global Services™</p>
+              <div className="mt-[24px] font-normal text-black/40 space-x-[24px]">
+                <Link href="/terms" className="underline">
+                  Terms of use
+                </Link>
+                <Link href="/privacy" className="underline">
+                  Privacy Policy
+                </Link>
+                <Link href="/ad-choices" className="underline">
+                  Ad Choices
+                </Link>
+              </div>
+
+              {/* Privacy choices with icon */}
+              <div className="flex justify-center items-center gap-[4px] mt-[16px] text-black/40 font-normal">
+                <Link href="/privacy-choices" className="underline">
+                  Your privacy choices
+                </Link>
+
+                <Image
+                  src="/consent.svg"
+                  alt="Consent"
+                  width={16}
+                  height={8}
+                />
+              </div>
+            </div>
+
           </div>
         </div>
-      </div>
     </>
   );
 }
-
-console.log("Footer loaded");

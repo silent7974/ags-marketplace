@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function profileModal() {
+export default function ProfileModal() {
   return (
     <div>profileModal</div>
   )

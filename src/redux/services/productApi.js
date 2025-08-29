@@ -37,7 +37,17 @@ export const productApi = createApi({
       }),
       invalidatesTags: ['Products'],
     }),
-  }),
-});
+    getProductsBySearch: builder.query({
+      query: (searchTerm) => `/search?query=${encodeURIComponent(searchTerm)}`,
+      providesTags: ['Products'],
+    }),
+  })
+})
 
-export const { useAddProductMutation, useGetProductsQuery, useGetProductByIdQuery, useUpdateProductMutation, useDeleteProductMutation } = productApi;
+export const { 
+  useAddProductMutation, 
+  useGetProductsQuery, 
+  useGetProductByIdQuery, 
+  useUpdateProductMutation, 
+  useDeleteProductMutation, 
+  useGetProductsBySearchQuery } = productApi
