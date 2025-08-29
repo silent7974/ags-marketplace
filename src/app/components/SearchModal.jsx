@@ -1,4 +1,3 @@
-// components/SearchModal.jsx
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
@@ -20,7 +19,6 @@ export default function SearchModal({ isOpen, onClose }) {
 
   return (
     <AnimatePresence>
-      {isOpen && (
         <motion.div
           initial={{ y: "100%" }}
           animate={{ y: 0 }}
@@ -29,13 +27,13 @@ export default function SearchModal({ isOpen, onClose }) {
           className="fixed inset-0 bg-white z-50 px-4 pt-4 flex flex-col"
         >
           {/* Header */}
-          <div className="flex items-center gap-4 mb-4">
-            <ChevronLeft
-              size={24}
-              className="text-black cursor-pointer"
-              onClick={onClose}
-            />
-            <div className="flex-1 flex items-center bg-transparent border border-black rounded-full h-[42px] px-4">
+          <div className="flex items-center gap-[8px] mb-4">
+                        <ChevronLeft
+                          size={24}
+                          className="text-black cursor-pointer"
+                          onClick={onClose}
+                        />
+            <div className="flex-1 relative flex items-center bg-transparent border border-black rounded-full h-[40px] pl-[16px] pr-[46px]">
               <input
                 type="text"
                 placeholder="Search AGS"
@@ -44,28 +42,26 @@ export default function SearchModal({ isOpen, onClose }) {
                 className="flex-1 text-black placeholder:text-[#00000080] font-montserrat font-medium text-[16px] outline-none"
               />
 
-              {/* Right side */}
-              <div className="flex items-center gap-2">
-                {query && (
-                  <Image
-                    src="/cancel-search.svg"
-                    alt="Cancel"
-                    width={18}
-                    height={18}
-                    className="cursor-pointer"
-                    onClick={() => setQuery("")}
-                  />
-                )}
+              {/* Cancel button (inside input, absolute left of search icon) */}
+              {query && (
+                <Image
+                  src="/cancel-search.svg"
+                  alt="Cancel"
+                  width={18}
+                  height={18}
+                  className="absolute right-[50px] cursor-pointer"
+                  onClick={() => setQuery("")}
+                />
+              )}
 
-                <div className="w-[42px] h-[34px] bg-[#101010] rounded-[16px] flex items-center justify-center">
-                  <Image
-                    src="/search-white.svg"
-                    alt="Search"
-                    width={18}
-                    height={18}
-                  />
-                </div>
-              </div>
+              {/* Search button (always pinned at far right) */}
+              <Image
+                src="/search-white.svg"
+                alt="Search"
+                width={42}
+                height={42}
+                className="absolute right-[4px]"
+              />
             </div>
           </div>
 
@@ -88,7 +84,6 @@ export default function SearchModal({ isOpen, onClose }) {
             ))}
           </div>
         </motion.div>
-      )}
     </AnimatePresence>
   )
 }
