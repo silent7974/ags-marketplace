@@ -53,7 +53,8 @@ const productCategoryMap = {
   "Accessories": {
     categories: {
       "Bags": ["Handbag", "Backpack"],
-      "Jewelry": ["Necklace", "Bracelet", "Earrings", "Wristwatch"]
+      "Jewelry": ["Necklace", "Bracelet", "Earrings", "Wristwatch"],
+      "Glasses": ["Photochromic", "shades", "magnificated"]
     },
     variants: {
       colors: true

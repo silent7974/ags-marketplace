@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-// Minimal Card components (replace later with shadcn/ui or your own)
+// Minimal Card components
 function Card({ children, className }) {
   return (
-    <div className={`bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden ${className}`}>
+    <div className={`overflow-hidden ${className}`}>
       {children}
     </div>
   );
@@ -15,10 +15,10 @@ function CardContent({ children }) {
 }
 
 export default function FeaturedSection({
-  titleImg,       // path to the title image (LimitedTime.png, etc.)
-  altText,        // alt for the image
-  filterFn,       // function to filter products
-  fallbackText,   // what to show when no products
+  titleImg, // path to the title image (LimitedTime.png, etc.)
+  altText, // alt for the image
+  filterFn, // function to filter products
+  fallbackText, // what to show when no products
 }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,8 +43,12 @@ export default function FeaturedSection({
     fetchProducts();
   }, []);
 
+  // format price with commas
+  const formatPrice = (price) =>
+    price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   return (
-    <section className="w-full mt-4 px-2">
+    <section className="w-full mt-4">
       {/* Title Image */}
       <div className="w-full h-9 relative mb-4">
         <Image
@@ -60,23 +64,47 @@ export default function FeaturedSection({
       {loading ? (
         <p className="text-gray-500 text-sm">Loading...</p>
       ) : products.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="flex gap-[4px] overflow-x-auto snap-x snap-mandatory scrollbar-hide">
           {products.map((p) => (
-            <Card key={p._id}>
+            <Card
+              key={p._id}
+              className="min-w-[160px] snap-start "
+            >
               <CardContent>
-                <Image
-                  src={p.images?.[0]?.url || "/placeholder.png"} // first product image
-                  alt={p.productName || "Product"}
-                  width={300}
-                  height={300}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-3">
-                  <h3 className="text-base font-semibold truncate">
-                    {p.productName}
-                  </h3>
-                  <p className="text-gray-600 text-sm">₦{p.price}</p>
+                {/* Product Image with aspect ratio wrapper */}
+                <div className="relative w-full aspect-[4/5]">
+                  <Image
+                    src={p.images?.[0]?.url || "/placeholder.png"}
+                    alt={p.productName || "Product"}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
+
+                
+                {/* Prices + Discount */}
+                <div className="flex items-center justify-between px-[2px] mt-[2px] pb-3">
+                  {/* Left side: Discounted + Original */}
+                  <div className="flex items-center gap-[4px]">
+                    {/* Discounted Price */}
+                    <p className="font-semibold text-[12px] text-[#D8A31B] font-inter">
+                      ₦{formatPrice(p.discountedPrice)}
+                    </p>
+
+                    {/* Original Price */}
+                    <p className="text-[8px] font-inter text-black/50 line-through">
+                      ₦{p.formattedPrice}
+                    </p>
+                  </div>
+
+                  {/* Right side: Discount Badge */}
+                  <div className="w-[24px] h-[14px] border border-[#D8A31B] rounded-[2px] flex items-center justify-center">
+                    <span className="text-[8px] font-semibold font-inter text-[#D8A31B]">
+                      -{p.discount}%
+                    </span>
+                  </div>
+                </div>
+
               </CardContent>
             </Card>
           ))}
