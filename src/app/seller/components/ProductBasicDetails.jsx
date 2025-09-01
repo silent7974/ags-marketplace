@@ -1,5 +1,5 @@
 export default function ProductBasicDetails({ productData, setProductData }) {
-  const DISCOUNT_OPTIONS = [5, 10, 15, 20];
+  const DISCOUNT_OPTIONS = [5, 10, 20, 50, 75, 90];
 
   // Format price with commas
   function formatPrice(value) {

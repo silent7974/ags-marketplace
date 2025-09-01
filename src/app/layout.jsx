@@ -2,8 +2,7 @@ import { Montserrat, Inter } from "next/font/google"
 import "./globals.css"
 import MobileOnlyWrapper from "./components/MobileWrapper"
 import ReduxProvider from "@/redux/ReduxProvider"
-import Navbar from "./components/Navbar"
-import Footer from "./components/Footer"
+import LayoutWrapper from "./components/LayoutWrapper"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -14,7 +13,8 @@ const montserrat = Montserrat({
 const inter = Inter({ 
   subsets: ['latin'], 
   weight: ['400', '600'], 
-  variable: '--font-inter' })
+  variable: '--font-inter' 
+})
 
 export const metadata = {
   title: "AGS Marketplace",
@@ -28,15 +28,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${montserrat.variable}, ${inter.variable}`}>
-      <body
-        className=" bg-[#f8f9fa] pt-[48px]"
-      >
+    <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
+      <body className="bg-[#f8f9fa] pt-[48px]">
         <ReduxProvider>
           <MobileOnlyWrapper>
-            <Navbar />
-            {children}
-            <Footer />
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
           </MobileOnlyWrapper>
         </ReduxProvider>
       </body>

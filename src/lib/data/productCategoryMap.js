@@ -53,7 +53,7 @@ const productCategoryMap = {
   "Accessories": {
     categories: {
       "Bags": ["Handbag", "Backpack"],
-      "Jewelry": ["Necklace", "Bracelet", "Earrings"]
+      "Jewelry": ["Necklace", "Bracelet", "Earrings", "Wristwatch"]
     },
     variants: {
       colors: true
