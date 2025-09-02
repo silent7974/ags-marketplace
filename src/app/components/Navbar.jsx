@@ -6,8 +6,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import SearchModal from "./SearchModal"
-import ProfileModal from "./ProfileModal"
-
+import ProfileModal from "./ProfileModdal"
 export default function Navbar() {
   const pathname = usePathname()
   const [showProfile, setShowProfile] = useState(false)
