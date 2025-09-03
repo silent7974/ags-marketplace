@@ -11,12 +11,15 @@ export const productApi = createApi({
         method: 'POST',
         body: productData,
       }),
-      invalidatesTags: ['Products'], // refetch products after adding
+      invalidatesTags: ['Products'],
     }),
-    invalidatesTags: ['Products'],
     getProducts: builder.query({
-      query: () => '/products',
-      providesTags: ['Products'], // links query to this tag
+      query: () => '/products', // seller-specific
+      providesTags: ['Products'],
+    }),
+    getPublicProducts: builder.query({
+      query: () => '/public/products', // 👈 public route
+      providesTags: ['Products'],
     }),
     getProductById: builder.query({
       query: (id) => `/products/${id}`,
@@ -41,13 +44,15 @@ export const productApi = createApi({
       query: (searchTerm) => `/search?query=${encodeURIComponent(searchTerm)}`,
       providesTags: ['Products'],
     }),
-  })
-})
+  }),
+});
 
 export const { 
   useAddProductMutation, 
   useGetProductsQuery, 
+  useGetPublicProductsQuery,   // 👈 export this
   useGetProductByIdQuery, 
   useUpdateProductMutation, 
   useDeleteProductMutation, 
-  useGetProductsBySearchQuery } = productApi
+  useGetProductsBySearchQuery 
+} = productApi;

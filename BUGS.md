@@ -1,8 +1,9 @@
-- [ ] Products should have a slice that holds all the data
+- [ ] Products should have a slice that holds all the data ✅
 - [ ] SellerNavbar profile image and first name not updating until I enter the profile settings page and load it
 - [ ] In Profile settings page, the delete button does not clear the deleted seller products from the database
 - [ ] The sidebar triggered by the hamburger menu should feel bouncy (ease in out back animation)
 - [ ] Products related data UI should be stored in a redux slice
 - [ ] There should be a size guide in products add/edit pages
-- [ ] Category in both products add/edit pages should not be fetched from 'sellerToken' but from the sellerProfileSlice.js
+- [ ] Category in both products add/edit pages should not be fetched from 'sellerToken' but from the sellerProfileSlice.js ✅
 - [ ] Banner redesign for even smaller screens
+- [ ] In AllTabContent.jsx there's a "0" that shows next to prices of products that don't have discounts

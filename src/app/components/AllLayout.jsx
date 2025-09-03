@@ -1,9 +1,10 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Zap, ThumbsUp } from "lucide-react"
 import FeaturedSection from "./FeaturedSection"
+import AllTabContent from "./AllTabContent"
 
 const banners = [
   { src: "/banners/banner.jpg", alt: "Banner 1" },
@@ -40,10 +41,16 @@ const whySlides = [
   { icon: "/package.svg", title: "Delivery guarantee" },
 ]
 
+const allTabs = ["All", "Deals", "Best-Selling", "5-Star Rated", "New In"]
+
+
 export default function AllLayout() {
   const [index, setIndex] = useState(0)
   const [textIndex, setTextIndex] = useState(0)
   const [whyIndex, setWhyIndex] = useState(0)
+
+  const [activeTab, setActiveTab] = useState("All")
+  const tabsRef = useRef({})
 
   // auto-slide banners every 5s
   useEffect(() => {
@@ -68,6 +75,17 @@ export default function AllLayout() {
     }, 5000)
     return () => clearInterval(interval)
   }, [])
+
+  // Scroll selected tab into view
+  useEffect(() => {
+    if (tabsRef.current[activeTab]) {
+      tabsRef.current[activeTab].scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      })
+    }
+  }, [activeTab])
 
   return (
     <>
@@ -203,7 +221,7 @@ export default function AllLayout() {
       <div className="px-4">
         {/* Limited-Time Offer */}
         <FeaturedSection
-          titleImg="/titles/Limited-time.jpg"
+          titleImg="/titles/Limited-time.svg"
           altText="Limited-Time Offer"
           filterFn={(p) => p.discount >= 75}
           fallbackText="No limited-time offers yet. Check back soon!"
@@ -211,19 +229,71 @@ export default function AllLayout() {
 
         {/* Limited Stock */}
         <FeaturedSection
-          titleImg="/titles/Limited-stocks.jpg"
+          titleImg="/titles/Limited-stocks.svg"
           altText="Limited Stock"
           filterFn={(p) => p.quantity <= 20}
           fallbackText="No limited-stock items available right now."
+          showLimitedStockBadge
         />
 
         {/* Featured Brands */}
         <FeaturedSection
-          titleImg="/titles/Featured-brands.jpg"
+          titleImg="/titles/Featured-brands.svg"
           altText="Featured Brands"
           filterFn={() => false} // force no products
           fallbackText="Our featured brands are coming soon!"
         />
+      </div>
+
+      <div className="w-full">
+        {/* Sub Tabs inside All */}
+        <div className="w-full mt-[20px]">
+          {/* Separator */}
+          <div className="w-full h-[4px] bg-[#EEEEEE]" />
+
+          {/* Tabs container */}
+          <div className="w-full h-[40px] flex items-center">
+            <div className="flex gap-[20px] px-[16px] overflow-x-auto scrollbar-hide">
+              {allTabs.map((tab) => {
+                const isActive = activeTab === tab
+                const textColor = isActive ? "text-black" : "text-black/50"
+                const iconOpacity = isActive ? "opacity-100" : "opacity-50"
+
+                return (
+                  <button
+                    key={tab}
+                    ref={(el) => (tabsRef.current[tab] = el)}
+                    onClick={() => setActiveTab(tab)}
+                    className="relative flex items-center gap-[4px] pb-1"
+                  >
+                    {/* Icons where needed */}
+                    {tab === "Deals" && (
+                      <Zap size={16} className={`${iconOpacity}`} fill={isActive ? "black" : "gray"} stroke="none" />
+                    )}
+                    {tab === "Best-Selling" && (
+                      <ThumbsUp size={16} className={`${iconOpacity}`} fill={isActive ? "black" : "gray"} stroke="none" />
+                    )}
+
+                    {/* Tab text */}
+                    <span
+                      className={`font-medium font-montserrat text-[16px] ${textColor} whitespace-nowrap`}
+                    >
+                      {tab}
+                    </span>
+
+                    {/* Active indicator */}
+                    {isActive && (
+                      <span className="absolute bottom-[1px] left-0 right-0 mx-auto w-[20px] h-[4px] rounded-full bg-black" />
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Content Switcher */}
+        <AllTabContent activeTab={activeTab} />
       </div>
     </>
   )

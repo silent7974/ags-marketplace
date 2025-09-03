@@ -4,12 +4,14 @@ import { sellerApi } from './services/sellerApi'
 import { productApi } from '@/redux/services/productApi'
 import authSlice from './slices/authSlice'
 import sellerProfileReducer from '@/redux/slices/sellerProfileSlice'
+import productsReducer from "./slices/productsSlice"
 
 export const store = configureStore({
   reducer: {
     [buyerApi.reducerPath]: buyerApi.reducer,
     [sellerApi.reducerPath]: sellerApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
+    products: productsReducer,
     auth: authSlice,
     sellerProfile: sellerProfileReducer
   },
