@@ -48,7 +48,7 @@ const ProductSchema = new mongoose.Schema(
   { timestamps: true, strict: false } // let backend control structure
 )
 
-// In your Product schema:
+// In ProductSchema definition
 ProductSchema.index({
   productName: "text",
   description: "text",
@@ -57,8 +57,11 @@ ProductSchema.index({
   subType: "text",
   tag: "text",
   trending: "text",
-  useCase: "text"
+  useCase: "text",
+  "variants.color": "text",   // ✅ searchable color
+  "variants.size": "text",    // ✅ searchable size
 })
+
 
 export default mongoose.models.Product ||
   mongoose.model("Product", ProductSchema)
