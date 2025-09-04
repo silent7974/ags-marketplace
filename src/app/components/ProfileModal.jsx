@@ -1,6 +1,7 @@
 "use client"
 
-import { User, ClipboardList, Star, Headphones, History } from "lucide-react"
+import { Headphones, History } from "lucide-react"
+import Image from "next/image"
 
 export default function ProfileModal() {
   return (
@@ -35,7 +36,12 @@ export default function ProfileModal() {
               {/* Your orders */}
               <div className="w-[66px] h-[75px] flex flex-col items-center justify-between py-1">
                 <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-                  <ClipboardList className="w-5 h-5 text-white" />
+                  <Image className="w-5 h-5"
+                    src="/orders.svg"
+                    alt="Reviews"
+                    width={32}
+                    height={32}
+                  />
                 </div>
                 <span className="text-[11px] text-center leading-tight">Your orders</span>
               </div>
@@ -43,7 +49,12 @@ export default function ProfileModal() {
               {/* Your profile */}
               <div className="w-[66px] h-[75px] flex flex-col items-center justify-between py-1">
                 <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-                  <User className="w-5 h-5 text-white" />
+                  <Image className="w-5 h-5"
+                    src="/profile-white.svg"
+                    alt="Reviews"
+                    width={32}
+                    height={32}
+                  />
                 </div>
                 <span className="text-[11px] text-center leading-tight">Your profile</span>
               </div>
@@ -51,7 +62,12 @@ export default function ProfileModal() {
               {/* Your reviews */}
               <div className="w-[66px] h-[75px] flex flex-col items-center justify-between py-1">
                 <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-                  <Star className="w-5 h-5 text-white" />
+                  <Image className="w-5 h-5"
+                    src="/reviews.svg"
+                    alt="Reviews"
+                    width={32}
+                    height={32}
+                  />
                 </div>
                 <span className="text-[11px] text-center leading-tight">Your reviews</span>
               </div>
