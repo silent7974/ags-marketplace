@@ -8,13 +8,14 @@ import { useState } from "react"
 import SearchModal from "./SearchModal"
 import ProfileModal from "./ProfileModal"
 
+
 export default function Navbar() {
   const pathname = usePathname()
   const [showProfile, setShowProfile] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
 
   return (
-    <nav className="w-full flex flex-col px-[16px]">
+    <nav className="w-full flex flex-col px-[16px] relative">
       {/* Top row - Hamburger, Logo, Icons */}
       <div className="flex items-center justify-between w-full">
         {/* Left - Hamburger & Logo */}
@@ -34,11 +35,14 @@ export default function Navbar() {
         </div>
 
         {/* Right - User & Cart */}
-        <div className="flex items-center gap-[24px]">
+        <div className="flex items-center gap-[24px] relative">
           {/* Profile button */}
-          <button onClick={() => setShowProfile(true)}>
+          <button onClick={() => setShowProfile((prev) => !prev)}>
             <Image src="/profile.svg" alt="User profile" width={32} height={32} />
           </button>
+
+          {/* Profile Modal */}
+          {showProfile && <ProfileModal onClose={() => setShowProfile(false)} />}
 
           {/* Cart */}
           <Link href="/cart">
@@ -61,7 +65,6 @@ export default function Navbar() {
       </div>
 
       {/* Modals */}
-      {showProfile && <ProfileModal onClose={() => setShowProfile(false)} />}
       {showSearch && <SearchModal onClose={() => setShowSearch(false)} />}
     </nav>
   )
