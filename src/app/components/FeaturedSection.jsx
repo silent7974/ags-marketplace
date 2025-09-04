@@ -1,20 +1,18 @@
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useMemo } from "react";
 import { useGetPublicProductsQuery } from "@/redux/services/productApi";
-import { setProducts } from "@/redux/slices/productsSlice";
 import Image from "next/image";
 
- export default function FeaturedSection ({ titleImg, altText, filterFn, fallbackText, showLimitedStockBadge }) {
-  const dispatch = useDispatch();
+export default function FeaturedSection({
+  titleImg,
+  altText,
+  filterFn,
+  fallbackText,
+  showLimitedStockBadge,
+}) {
   const { data, isLoading, isError } = useGetPublicProductsQuery();
-  const { items: products } = useSelector((state) => state.products);
 
-  // Sync RTK Query → Redux slice
-  useEffect(() => {
-    if (data) {
-      dispatch(setProducts(data));
-    }
-  }, [data, dispatch]);
+  // ✅ normalize to array (backend might return { products: [...] })
+  const products = Array.isArray(data) ? data : data?.products || [];
 
   const filteredProducts = useMemo(() => {
     return filterFn ? products.filter(filterFn) : products;

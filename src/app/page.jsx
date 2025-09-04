@@ -3,17 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import headerCategoryMap from "@/lib/data/headerCategoryMap"
 import AllLayout from "./components/AllLayout"
-
-function CategoryLayout({ category }) {
-  return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold">{category}</h1>
-      <p className="text-gray-500">
-        Layout for {category} showing sub-categories / products.
-      </p>
-    </div>
-  )
-}
+import CategoryLayout from "./components/CategoryLayout"
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState("All")

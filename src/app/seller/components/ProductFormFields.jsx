@@ -154,12 +154,12 @@ function ColorDropdown({ selected, onSelect }) {
 }
 
 export default function ProductFormFields({ 
-  sellerCategory, 
-  productCategory, 
-  setProductCategory,
-  subcategory,
-  setSubcategory,
-  variants = [0],
+  category, 
+  subCategory,
+  setSubCategory,
+  subType, 
+  setSubType,
+  variants = {},
   setVariants,
   useCase,
   setUseCase,
@@ -169,54 +169,53 @@ export default function ProductFormFields({
   setTrending
 }) {
 
-  if (!sellerCategory) {
+  if (!category) {
     return <p className="text-red-500">No seller category found.</p>
   }
 
-  const categoryData = productCategoryMap[sellerCategory]
+  const categoryData = productCategoryMap[category]
 
   if (!categoryData) {
-    return <p className="text-red-500">No product mapping found for {sellerCategory}.</p>
+    return <p className="text-red-500">No product mapping found for {category}.</p>
   }
 
   const v = categoryData.variants
 
   return (
     <div className="space-y-4">
-      {/* Product Category */}
+
+      {/* Subcategory (first dropdown inside seller’s category) */}
       <CustomDropdown
-        label="Product Category"
-        placeholder="Select product category"
+        label="Subcategory"
+        placeholder="Select subcategory"
         options={Object.keys(categoryData.categories)}
-        selected={productCategory}
+        selected={subCategory}
         onSelect={(val) => {
-          setProductCategory(val)
+          setSubCategory(val)
+          setSubType('') // reset deeper level
         }}
       />
 
-      {/* Subcategory */}
-      {productCategory && (
+      {/* Sub-Type (second dropdown, depends on subCategory) */}
+      {subCategory && Array.isArray(categoryData.categories[subCategory]) && (
         <CustomDropdown
-          label="Subcategory"
-          placeholder="Select subcategory"
-          options={categoryData.categories[productCategory]}
-          selected={subcategory}
-          onSelect={(val) => setSubcategory(val)}
+          label="Sub-Type"
+          placeholder="Select sub-type"
+          options={categoryData.categories[subCategory]}
+          selected={subType}
+          onSelect={(val) => setSubType(val)}
         />
       )}
 
-      {/* Variant Fields */}
-      {productCategory && (
+      {/* Variants */}
+      {subCategory && (
         <div className="mt-4 space-y-4">
           {v.sizes && (
             <CustomDropdown
               label="Size"
               placeholder="Select size"
               options={v.sizes}
-              selected={Array.isArray(variants.size)
-                ? variants.size.join(', ')
-                : variants.size
-              }
+              selected={variants.size || ''}
               onSelect={(val) => setVariants({ ...variants, size: val })}
             />
           )}
@@ -230,6 +229,7 @@ export default function ProductFormFields({
                 type="number"
                 className="border rounded p-2 w-full text-[12px] font-[Inter]"
                 placeholder={`Enter ${v.measurement}`}
+                value={variants.measurement || ''}
                 onChange={(e) =>
                   setVariants({ ...variants, measurement: e.target.value })
                 }
@@ -242,11 +242,7 @@ export default function ProductFormFields({
               label="Memory"
               placeholder="Select memory"
               options={v.memory}
-              selected={
-                Array.isArray(variants.memory)
-                  ? variants.memory.join(', ')
-                  : variants.memory
-              }
+              selected={variants.memory || ''}
               onSelect={(val) => setVariants({ ...variants, memory: val })}
             />
           )}
@@ -256,27 +252,21 @@ export default function ProductFormFields({
               label="RAM"
               placeholder="Select RAM"
               options={v.ram}
-              selected={
-                Array.isArray(variants.ram) ? variants.ram.join(', ') : variants.ram
-              }
+              selected={variants.ram || ''}
               onSelect={(val) => setVariants({ ...variants, ram: val })}
             />
           )}
 
           {v.colors && (
             <ColorDropdown
-              selected={
-                Array.isArray(variants.color)
-                  ? variants.color.join(', ')
-                  : variants.color
-              }
+              selected={variants.color || ''}
               onSelect={(val) => setVariants({ ...variants, color: val })}
             />
           )}
-
-          {/* NEW — Use Cases */}
+          
+          {/* Use Case */}
           <CustomDropdown
-            label="Use Cases"
+            label="Use Case"
             placeholder="Select use case"
             options={[
               'Casual Outings',
@@ -295,10 +285,10 @@ export default function ProductFormFields({
               'Tech Work & Gadgets',
             ]}
             selected={useCase}
-            onSelect={(val) => setUseCase(val)}
+            onSelect={setUseCase}
           />
 
-          {/* NEW — Tags */}
+          {/* Tags */}
           <CustomDropdown
             label="Tags"
             placeholder="Select tag"
@@ -325,10 +315,10 @@ export default function ProductFormFields({
               'Budget-friendly',
             ]}
             selected={tag}
-            onSelect={(val) => setTag(val)}
+            onSelect={setTag}
           />
 
-          {/* NEW — Trending */}
+          {/* Trending */}
           <CustomDropdown
             label="Trending"
             placeholder="Select trending"
@@ -350,7 +340,7 @@ export default function ProductFormFields({
               'Independence Day Sale',
             ]}
             selected={trending}
-            onSelect={(val) => setTrending(val)}
+            onSelect={setTrending}
           />
         </div>
       )}

@@ -33,8 +33,9 @@ export async function POST(req) {
       formattedPrice,
       quantity,
       discount = 0,
-      productCategory,
-      subcategory = "",
+      category,
+      subCategory = "",
+      subType = "",
       useCase = "",
       tag = "",
       trending = "",
@@ -44,7 +45,7 @@ export async function POST(req) {
     } = data;
 
     // Basic required field checks
-    if (!productName || !productCategory || price == null || quantity == null) {
+    if (!productName || !subCategory || price == null || quantity == null) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -63,8 +64,9 @@ export async function POST(req) {
       discountedPrice,
       quantity,
       discount,
-      category: productCategory.trim(),
-      subcategory: subcategory?.trim() || "",
+      category,
+      subCategory,
+      subType,
       useCase,
       tag,
       trending,

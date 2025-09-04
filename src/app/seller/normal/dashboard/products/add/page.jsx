@@ -57,7 +57,6 @@ async function uploadImageToCloudinary(file) {
 export default function AddProductLayout() {
   const router = useRouter()
 
-  // ✅ Get seller category from Redux slice
   const category = useSelector((state) => state.sellerProfile.category)
 
   const [productImages, setProductImages] = useState([])
@@ -80,7 +79,8 @@ export default function AddProductLayout() {
 
   const [productData, setProductData] = useState({
     productName: '',
-    productCategory: '',
+    subCategory: '',
+    subType: '',
     price: 0,
     discountedPrice: 0,
     formattedPrice: '',
@@ -89,15 +89,12 @@ export default function AddProductLayout() {
     description: '',
   })
 
-  const [subcategory, setSubcategory] = useState('')
+  const [subCategory, setSubCategory] = useState('')
+  const [subType, setSubType] = useState('')
   const [variants, setVariants] = useState({}) // fixed: use object as per your comment
   const [useCase, setUseCase] = useState('')
   const [tag, setTag] = useState('')
   const [trending, setTrending] = useState('')
-
-  const setProductCategory = (category) => {
-    setProductData((prev) => ({ ...prev, productCategory: category }))
-  }
 
   const [variantColumns, setVariantColumns] = useState([])
 
@@ -111,7 +108,7 @@ export default function AddProductLayout() {
     if (productData.productName.trim() !== '') count++
     if (Number(productData.price) > 0) count++
     if (Number(productData.quantity) > 0) count++
-    if (productData.productCategory.trim() !== '') count++
+    if (subCategory.trim() !== '') count++
     return count
   })()
 
@@ -132,13 +129,16 @@ export default function AddProductLayout() {
       const dataToSubmit = {
         images: imagesForBackend,
         ...productData,
-        subcategory,
+        category,          // seller’s top category
+        subCategory,       // dropdown 2
+        subType,           // dropdown 3 if exists
         variants,
         useCase,
         tag,
         trending,
         variantColumns,
       }
+
 
       await addProduct(dataToSubmit).unwrap()
       alert('Product saved successfully!')
@@ -176,11 +176,11 @@ export default function AddProductLayout() {
       <ProductBasicDetails productData={productData} setProductData={setProductData} />
 
       <ProductFormFields
-        sellerCategory={category}
-        productCategory={productData.productCategory}
-        setProductCategory={setProductCategory}
-        subcategory={subcategory}
-        setSubcategory={setSubcategory}
+        category={category}
+        subCategory={subCategory}
+        setSubCategory={setSubCategory}
+        subType={subType}
+        setSubType={setSubType}
         variants={variants}
         setVariants={setVariants}
         useCase={useCase}
@@ -206,7 +206,9 @@ export default function AddProductLayout() {
       />
 
       {/* Progress Tracker */}
-      <ProductFormProgress progress={requiredFieldsCompleted} total={requiredFieldsTotal} />
+      <ProductFormProgress 
+        progress={requiredFieldsCompleted} total={requiredFieldsTotal} 
+      />
 
       {/* Submit Button */}
       <button
