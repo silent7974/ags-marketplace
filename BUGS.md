@@ -7,3 +7,4 @@
 - [ ] Category in both products add/edit pages should not be fetched from 'sellerToken' but from the sellerProfileSlice.js ✅
 - [ ] Banner redesign for even smaller screens
 - [ ] In AllTabContent.jsx there's a "0" that shows next to prices of products that don't have discounts
+- [ ] The modal (ProfileModal.jsx) is not responsive as screen gets smaller

@@ -56,7 +56,7 @@ export default function HomePage() {
       {activeCategory === "All" ? (
         <AllLayout />
       ) : (
-        <CategoryLayout category={activeCategory} />
+        <CategoryLayout category={activeCategory} /> 
       )}
     </div>
   )

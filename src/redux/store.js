@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { buyerApi } from './services/buyerApi'
+import { authApi } from './services/authApi'
 import { sellerApi } from './services/sellerApi'
 import { productApi } from '@/redux/services/productApi'
 import authSlice from './slices/authSlice'
@@ -8,7 +8,7 @@ import productsReducer from "./slices/productsSlice"
 
 export const store = configureStore({
   reducer: {
-    [buyerApi.reducerPath]: buyerApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     [sellerApi.reducerPath]: sellerApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
     products: productsReducer,
@@ -17,7 +17,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
-      buyerApi.middleware,
+      authApi.middleware,
       sellerApi.middleware,
       productApi.middleware
     ),

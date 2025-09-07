@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, RulerDimensionLine } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
+import SizeGuide from '@/app/components/SizeGuide'
+
 
 function CustomDropdown({ label, options, selected, onSelect, placeholder }) {
   const [open, setOpen] = useState(false)
@@ -169,6 +171,8 @@ export default function ProductFormFields({
   setTrending
 }) {
 
+  const [showSizeGuide, setShowSizeGuide] = useState(false)
+
   if (!category) {
     return <p className="text-red-500">No seller category found.</p>
   }
@@ -210,14 +214,30 @@ export default function ProductFormFields({
       {/* Variants */}
       {subCategory && (
         <div className="mt-4 space-y-4">
+
+          {/* ✅ Size Guide button only if this category supports sizes */}
           {v.sizes && (
-            <CustomDropdown
-              label="Size"
-              placeholder="Select size"
-              options={v.sizes}
-              selected={variants.size || ''}
-              onSelect={(val) => setVariants({ ...variants, size: val })}
-            />
+            <>
+              <div className="flex justify-end mb-1">
+                <button
+                  onClick={() => setShowSizeGuide(true)}
+                  className="flex items-center justify-center gap-[2px] w-[115px] h-[24px] rounded-[16px] bg-[#EEEEEE] px-[8px]"
+                >
+                  <RulerDimensionLine size={16} className="text-black" />
+                  <span className="text-[16px] font-inter text-black">
+                    Size Guide
+                  </span>
+                </button>
+              </div>
+
+              <CustomDropdown
+                label="Size"
+                placeholder="Select size"
+                options={v.sizes}
+                selected={variants.size || ''}
+                onSelect={(val) => setVariants({ ...variants, size: val })}
+              />
+            </>
           )}
 
           {v.measurement && (
@@ -343,6 +363,10 @@ export default function ProductFormFields({
             onSelect={setTrending}
           />
         </div>
+      )}
+      {/* 🔥 Size Guide Modal Placeholder */}
+      {showSizeGuide && (
+        <SizeGuide onClose={() => setShowSizeGuide(false)} />
       )}
     </div>
   )

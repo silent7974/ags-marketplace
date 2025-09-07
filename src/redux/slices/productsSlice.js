@@ -30,9 +30,12 @@ const productsSlice = createSlice({
         productApi.endpoints.getPublicProducts.matchFulfilled,
         (state, { payload }) => {
           state.isLoading = false;
-          state.items = payload || [];
+          state.items = Array.isArray(payload)
+            ? payload
+            : payload?.products || []; // ✅ handle both shapes
         }
       )
+
       .addMatcher(
         productApi.endpoints.getPublicProducts.matchRejected,
         (state) => {

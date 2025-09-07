@@ -17,7 +17,7 @@ const slides = [
     iconW: 16,
     iconH: 9,
     title: "Fast Delivery",
-    subtitle: "Reliable and secure shipping",
+    subtitle: "within 24 hours - same day",
   },
   {
     icon: "/shield.svg",
@@ -177,16 +177,16 @@ export default function AllLayout() {
               <Image
                 src="/shield-white.svg"
                 alt="Shield"
-                width={16}
-                height={16}
+                width={14}
+                height={14}
               />
-              <span className="text-[14px] text-white font-normal font-inter">
+              <span className="text-[12px] text-white font-normal font-inter">
                 Why choose AGS?
               </span>
             </div>
 
             {/* Right side animations */}
-            <div className="flex items-center gap-[24px]">
+            <div className="flex items-center ">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={whyIndex}
