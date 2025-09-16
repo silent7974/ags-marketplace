@@ -8,3 +8,4 @@
 - [ ] Banner redesign for even smaller screens
 - [ ] In AllTabContent.jsx there's a "0" that shows next to prices of products that don't have discounts
 - [ ] The modal (ProfileModal.jsx) is not responsive as screen gets smaller
+- [ ] Must study more of inventory tracking (How does it work if they're multiple same sku in the database?, In FeaturedSection.jsx what if the base product is not      under limited stock but one of it variant is?)

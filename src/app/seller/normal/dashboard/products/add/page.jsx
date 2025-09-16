@@ -173,12 +173,18 @@ export default function AddProductLayout() {
         </p>
       </div>
 
-      <ProductBasicDetails productData={productData} setProductData={setProductData} />
+      <ProductBasicDetails 
+        productData={productData} 
+        setProductData={setProductData}
+        category={category} 
+      />
 
       <ProductFormFields
         category={category}
         subCategory={subCategory}
         setSubCategory={setSubCategory}
+        productData={productData} 
+        setProductData={setProductData}
         subType={subType}
         setSubType={setSubType}
         variants={variants}
@@ -193,8 +199,8 @@ export default function AddProductLayout() {
 
       <VariantAccordion
         productName={productData.productName}
-        productCategory={productData.productCategory}
-        sellerCategory={category}
+        subCategory={subCategory}
+        category={category}
         basePrice={Number(productData.price || 0)}
         baseQuantity={Number(productData.quantity || 0)}
         discountPercent={Number(productData.discount || 0)}

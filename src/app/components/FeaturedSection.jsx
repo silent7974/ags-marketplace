@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useGetPublicProductsQuery } from "@/redux/services/productApi";
 import Image from "next/image";
+import { useRouter } from "next/navigation"
 
 export default function FeaturedSection({
   titleImg,
@@ -10,6 +11,8 @@ export default function FeaturedSection({
   showLimitedStockBadge,
 }) {
   const { data, isLoading, isError } = useGetPublicProductsQuery();
+  
+  const router = useRouter()
 
   // ✅ normalize to array (backend might return { products: [...] })
   const products = Array.isArray(data) ? data : data?.products || [];
@@ -34,7 +37,11 @@ export default function FeaturedSection({
       ) : filteredProducts.length > 0 ? (
         <div className="flex gap-[4px] overflow-x-auto snap-x snap-mandatory scrollbar-hide">
           {filteredProducts.map((p) => (
-            <div key={p._id} className="min-w-[160px] snap-start overflow-hidden">
+            <div 
+              key={p._id} 
+              className="min-w-[160px] snap-start overflow-hidden"
+              onClick={() => router.push(`/details/${p._id}`)}
+            >
               <div>
                 <div className="relative w-full aspect-[4/5]">
                   <Image

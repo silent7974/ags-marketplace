@@ -29,6 +29,7 @@ const ProductSchema = new mongoose.Schema(
     tag: String,
     trending: String,
     useCase: String,
+    sku: String,
     variants: [VariantSchema],
     images: [
       {

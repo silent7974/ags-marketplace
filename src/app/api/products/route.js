@@ -34,6 +34,7 @@ export async function POST(req) {
       quantity,
       discount = 0,
       category,
+      sku,
       subCategory = "",
       subType = "",
       useCase = "",
@@ -45,7 +46,7 @@ export async function POST(req) {
     } = data;
 
     // Basic required field checks
-    if (!productName || !subCategory || price == null || quantity == null) {
+    if (!productName || !subCategory || price == null || quantity == null || sku == null ) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -64,6 +65,7 @@ export async function POST(req) {
       discountedPrice,
       quantity,
       discount,
+      sku,
       category,
       subCategory,
       subType,

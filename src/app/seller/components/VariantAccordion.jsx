@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Plus } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
 import { CustomDropdown } from './ProductFormFields'
+import { generateBaseSKU, generateSKU, generateVariantSKU } from '@/app/utils/sku'
 /* -------------------------
   Small reusable UI pieces
    - CustomCellDropdown: a lightweight modal dropdown styled to match AGS
@@ -124,8 +125,8 @@ function ColorPickerDropdown({ selected, onSelect }) {
 
 export default function VariantAccordion({
   productName = '',
-  productCategory = '', // required to derive variant types from productCategoryMap
-  sellerCategory = '',
+  subCategory = '', // required to derive variant types from productCategoryMap
+  category = '',
   basePrice = 0,        // number (no commas)
   baseQuantity = 0,     // number
   discountPercent = 0,  // number, e.g. 10 means 10%
@@ -138,10 +139,10 @@ export default function VariantAccordion({
   const [open, setOpen] = useState(false)
 
   // derive variant row types from the productCategoryMap if available
-  const categoryData = productCategoryMap?.[sellerCategory] || productCategoryMap?.[productCategory] || null
+  const categoryData = productCategoryMap?.[category] || productCategoryMap?.[subCategory] || null
 
   // Fallback rule: if productCategory provided and exists, prefer that mapping
-  const productMapping = productCategoryMap?.[productCategory] || categoryData
+  const productMapping = productCategoryMap?.[subCategory] || categoryData
 
   // rows: e.g. ['Color','Size','Quantity','Price','SKU'] with dynamic entries
   const rows = useMemo(() => {
@@ -168,33 +169,6 @@ export default function VariantAccordion({
     return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
-  // generate SKU based on productName and the column's variant values
-  function generateSKU(productNameVal = '', colValues = {}) {
-    const clean = (s = '') => String(s || '').replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
-    const a = clean(productNameVal).slice(0, 3) || 'PRD'
-    // pick two variant pieces to include (prefer first two variant keys)
-    const variantParts = []
-    const variantKeys = Object.keys(colValues)
-    // prefer color, size/measurement/memory/ram specifically order
-    const preferred = ['color', 'size', 'measurement', 'memory', 'ram']
-    for (const p of preferred) {
-      if (colValues[p]) variantParts.push(clean(colValues[p]).slice(0, 3))
-      if (variantParts.length === 2) break
-    }
-    // fallback: anything else
-    if (variantParts.length < 2) {
-      for (const k of variantKeys) {
-        if (!preferred.includes(k) && colValues[k]) {
-          variantParts.push(clean(colValues[k]).slice(0, 3))
-        }
-        if (variantParts.length === 2) break
-      }
-    }
-    // random 4 digits
-    const rand = Math.floor(1000 + Math.random() * 9000)
-    return `${a}-${(variantParts[0] || 'XX')}-${(variantParts[1] || 'YY')}-${rand}`
-  }
-
   // create an empty variant column object (all keys from rows)
   function makeEmptyColumn() {
     const obj = {}
@@ -207,7 +181,7 @@ export default function VariantAccordion({
     const discount = Number(discountPercent || 0)
     const discounted = Math.round((Number(basePrice || 0) * (100 - discount)) / 100)
     obj.price = discounted // raw number
-    obj.sku = generateSKU(productName, obj)
+    obj.sku = generateSKU(productName, obj, obj.quantity)
     return obj
   }
 
@@ -230,8 +204,11 @@ export default function VariantAccordion({
       copy[columnIndex][key] = value
 
       // recompute SKU for that column
-      copy[columnIndex].sku = generateSKU(productName, copy[columnIndex])
-
+      copy[columnIndex].sku = generateSKU(
+        productName,
+        copy[columnIndex],
+        copy[columnIndex].quantity
+      )
       return copy
     })
   }
@@ -334,7 +311,7 @@ export default function VariantAccordion({
                                           {/* show main product values depending on row.key */}
                                           {row.key === 'quantity' && (<div className="text-[13px]">{Number(baseQuantity || 0)}</div>)}
                                           {row.key === 'price' && (<div className="text-[13px]">₦{formatNumberWithCommas(Math.round((Number(basePrice || 0) * (100 - Number(discountPercent || 0)))/100))}</div>)}
-                                          {row.key === 'sku' && (<div className="text-[13px] text-black/60">{generateSKU(productName, baseVariants)}</div>)}
+                                          {row.key === 'sku' && (<div className="text-[13px] text-black/60">{generateSKU(productName, baseVariants, baseQuantity)}</div>)}
                                           {row.type === 'select' && ['color','size','memory','ram'].includes(row.key) && (
                                             <div className="text-[13px] text-black/60">
                                               {baseVariants[row.key] || '—'}

@@ -7,7 +7,7 @@ export default function MobileOnlyWrapper({ children }) {
 
   useEffect(() => {
     const checkSize = () => {
-      setIsMobile(window.innerWidth <= 393);
+      setIsMobile(window.innerWidth <= 430);
     };
     checkSize(); // Initial check
     window.addEventListener('resize', checkSize);

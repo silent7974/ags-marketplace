@@ -5,18 +5,17 @@ import Navbar from "./Navbar"
 import Footer from "./Footer"
 import { useState } from "react"
 import SignInLayout from "./SignInLayout"
+import { useMeQuery } from "@/redux/services/authApi"
 
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname()
-
-  // Hide Navbar & Footer if route starts with /seller
   const isSellerRoute = pathname.startsWith("/seller")
 
-  // 🔑 Mock authentication (replace later with real auth state)
-  const isSignedIn = false
-
-  // Modal state
   const [showSignIn, setShowSignIn] = useState(false)
+
+  // ✅ use RTK Query to check session
+  const { data, isLoading } = useMeQuery()
+  const isSignedIn = !!data?.user
 
   return (
     <>
@@ -25,7 +24,7 @@ export default function LayoutWrapper({ children }) {
       {!isSellerRoute && <Footer />}
 
       {/* ✅ Sign-in CTA for unsigned users */}
-      {!isSellerRoute && !isSignedIn && (
+      {!isSellerRoute && !isLoading && !isSignedIn && (
         <div className="fixed bottom-0 left-0 right-0 bg-black/80 px-4 py-3 flex items-center justify-between">
           <p className="text-white font-inter font-bold text-[12px]">
             Sign in for the best experience
@@ -40,19 +39,7 @@ export default function LayoutWrapper({ children }) {
       )}
 
       {/* 🔥 Modal for SignInLayout */}
-      {showSignIn && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-          <div className="bg-white rounded-2xl shadow-xl w-[90%] max-w-md p-6 relative">
-            <button
-              onClick={() => setShowSignIn(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black"
-            >
-              ✕
-            </button>
-            <SignInLayout onSuccess={() => setShowSignIn(false)} />
-          </div>
-        </div>
-      )}
+      {showSignIn && <SignInLayout onClose={() => setShowSignIn(false)} />}
     </>
   )
 }

@@ -5,7 +5,7 @@ import Image from "next/image"
 import { X } from "lucide-react"
 import { useSignupMutation } from "@/redux/services/authApi"
 
-export default function SignUpLayout({ onClose }) {
+export default function SignUpLayout({ onClose, onSwitchToSignIn  }) {
   const [signup, { isLoading, error }] = useSignupMutation()
 
   const [form, setForm] = useState({
@@ -212,6 +212,18 @@ export default function SignUpLayout({ onClose }) {
           and acknowledge that you have read our{" "}
           <button type="button" className="text-[#6182D8] underline">
             Privacy Policy
+          </button>
+        </p>
+
+        {/* Switch to Sign In */}
+        <p className="mt-[24px] text-center text-[12px] font-inter font-medium text-black">
+          Already have an account?{" "}
+          <button
+            type="button"
+            onClick={onSwitchToSignIn}
+            className="text-[#6182D8] underline"
+          >
+            Sign In
           </button>
         </p>
 

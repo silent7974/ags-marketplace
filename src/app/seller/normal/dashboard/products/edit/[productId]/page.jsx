@@ -86,6 +86,8 @@ export default function EditProductPageLayout() {
     productName: '',
     price: 0,
     formattedPrice: '',
+    subCategory: '',
+    subType: '',
     discount: '',
     discountedPrice: 0,
     quantity: 0,
@@ -96,16 +98,16 @@ export default function EditProductPageLayout() {
     setProductDataState(newData)
   }
 
-  const [productCategory, setProductCategoryState] = useState('')
-  const setProductCategory = (val) => {
-    logUpdate('productCategory', productCategory, val)
-    setProductCategoryState(val)
+  const [subCategory, setSubCateogryCategoryState] = useState('')
+  const setSubCategory = (val) => {
+    logUpdate('Sub Category', subCategory, val)
+    setSubCateogryCategoryState(val)
   }
 
-  const [subcategory, setSubcategoryState] = useState('')
-  const setSubcategory = (val) => {
-    logUpdate('subcategory', subcategory, val)
-    setSubcategoryState(val)
+  const [subType, setSubTypeState] = useState('')
+  const setSubType = (val) => {
+    logUpdate('sub Type', subType, val)
+    setSubTypeState(val)
   }
 
   const [variants, setVariantsState] = useState([])
@@ -169,8 +171,8 @@ export default function EditProductPageLayout() {
         description: product.description || '',
       })
 
-      setProductCategory(product.category || '')
-      setSubcategory(product.subcategory || '')
+      setSubCategory(product.subCategory || '')
+      setSubType(product.subType || '')
       setUseCase(product.useCase || '')
       setTag(product.tag || '')
       setTrending(product.trending || '')
@@ -184,8 +186,8 @@ export default function EditProductPageLayout() {
   const requiredFieldsTotal = 5
   const requiredFieldsCompleted =
     (productData.productName ? 1 : 0) +
-    (productCategory ? 1 : 0) +
-    (subcategory ? 1 : 0) +
+    (subCategory ? 1 : 0) +
+    (subType ? 1 : 0) +
     (productData.price ? 1 : 0) +
     (productImages.length > 0 ? 1 : 0)
 
@@ -209,8 +211,8 @@ export default function EditProductPageLayout() {
       const payload = {
         id: productId,
         ...productData,
-        category: productCategory,
-        subcategory,
+        subCategory,
+        subType,
         variants,
         variantColumns,
         useCase,
@@ -294,14 +296,20 @@ export default function EditProductPageLayout() {
         </p>
       </div>
 
-      <ProductBasicDetails productData={productData} setProductData={setProductData} />
+      <ProductBasicDetails 
+        productData={productData} 
+        setProductData={setProductData}
+        category={category}  
+      />
 
       <ProductFormFields
-        sellerCategory={product?.sellerCategory || category}
-        productCategory={productCategory}
-        setProductCategory={setProductCategory}
-        subcategory={subcategory}
-        setSubcategory={setSubcategory}
+        category={category}
+        subCategory={subCategory}
+        setSubCategory={setSubCategory}
+        productData={productData} 
+        setProductData={setProductData}
+        subType={subType}
+        setSubType={setSubType}
         variants={variants[0] || {}}
         setVariants={(updatedObject) => setVariants([updatedObject])}
         useCase={useCase}
@@ -318,8 +326,8 @@ export default function EditProductPageLayout() {
 
       <InventoryTracker
         productName={productData.productName}
-        sellerCategory={product?.sellerCategory || category}
-        productCategory={productCategory}
+        category={category}
+        subCategory={subCategory}
         discountedPrice={productData.discountedPrice}
         quantity={productData.quantity}
         variants={variants[0] || []}

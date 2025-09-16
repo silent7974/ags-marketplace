@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect, useMemo } from 'react'
-import { Plus } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
+import { generateSKU } from '@/app/utils/sku'
 
 // --- Your dropdown components unchanged ---
 function CustomCellDropdown({ label, options = [], selected, onSelect, placeholder = 'Select' }) {
@@ -145,8 +145,8 @@ function ColorPickerDropdown({ selected, onSelect }) {
 // --- Main InventoryTracker ---
 export default function InventoryTracker({
   productName,
-  sellerCategory,
-  productCategory,
+  category,
+  subCategory,
   discountedPrice,
   quantity,
   variants = [],
@@ -157,8 +157,8 @@ export default function InventoryTracker({
 }) {
   // Determine category mapping
   const categoryData =
-    productCategoryMap?.[sellerCategory] || productCategoryMap?.[productCategory] || null
-  const productMapping = productCategoryMap?.[productCategory] || categoryData
+    productCategoryMap?.[category] || productCategoryMap?.[subCategory] || null
+  const productMapping = productCategoryMap?.[subCategory] || categoryData
 
   // Row definitions based on category
   const rows = useMemo(() => {
@@ -183,30 +183,6 @@ export default function InventoryTracker({
     return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
-  function generateSKU(productNameVal = '', colValues = {}) {
-    const clean = (s = '') =>
-      String(s || '').replace(/\s+/g, '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
-    const a = clean(productNameVal).slice(0, 3) || 'PRD'
-    const variantParts = []
-    const variantKeys = Object.keys(colValues)
-    const preferred = ['color', 'size', 'measurement', 'memory', 'ram']
-    for (const p of preferred) {
-      if (colValues[p]) variantParts.push(clean(colValues[p]).slice(0, 3))
-      if (variantParts.length === 2) break
-    }
-    // fallback: anything else
-    if (variantParts.length < 2) {
-      for (const k of variantKeys) {
-        if (!preferred.includes(k) && colValues[k]) {
-          variantParts.push(clean(colValues[k]).slice(0, 3))
-        }
-        if (variantParts.length === 2) break
-      }
-    }
-    const rand = Math.floor(1000 + Math.random() * 9000)
-    return `${a}-${variantParts[0] || 'XX'}-${variantParts[1] || 'YY'}-${rand}`
-  }
-
   function makeEmptyColumn() {
     const obj = {}
     rows.forEach((r) => {
@@ -217,14 +193,23 @@ export default function InventoryTracker({
     obj.quantity = Number(quantity || 0)
     const discounted = Number(discountedPrice || 0)
     obj.price = discounted // raw number
-    obj.sku = generateSKU(productName, obj)
+    obj.sku = generateSKU(productName, obj, obj.quantity)
     return obj
   }
 
-  const updateCell = (colIndex, key, value) => {
-    const updated = [...variantColumns]
-    updated[colIndex] = { ...updated[colIndex], [key]: value }
-    setVariantColumns(updated)
+  function updateCell(columnIndex, key, value) {
+    setVariantColumns((prev) => {
+      const copy = prev.map((c) => ({ ...c }))
+      copy[columnIndex][key] = value
+
+      // recompute SKU for that column
+      copy[columnIndex].sku = generateSKU(
+        productName,
+        copy[columnIndex],
+        copy[columnIndex].quantity
+      )
+      return copy
+    })
   }
 
   function addVariantColumn() {
@@ -246,9 +231,11 @@ export default function InventoryTracker({
           const discounted = Number(discountedPrice || 0)
           next.price = discounted
           // ensure quantity uses baseQuantity if empty or zero
-          if (!next.quantity) next.quantity = Number(quantity || 0)
+          if (next.quantity === undefined || next.quantity === null) {
+              next.quantity = Number(quantity || 0)
+          }
           // regenerate SKU
-          next.sku = generateSKU(productName, next)
+          next.sku = generateSKU(productName, next, next.quantity ?? 0)
           return next
         })
       })
@@ -300,7 +287,7 @@ export default function InventoryTracker({
                         <td className="px-3 py-2 align-top border-b" style={{ borderColor: 'rgba(24,51,27,0.5)', borderWidth: '0.5px' }}>
                             {row.key === 'quantity' && (<div className="text-[13px]">{Number(quantity || 0)}</div>)}
                             {row.key === 'price' && (<div className="text-[13px]">₦{formatNumberWithCommas(discountedPrice || 0)}</div>)}
-                            {row.key === 'sku' && (<div className="text-[13px] text-black/60">{generateSKU(productName, variants)}</div>)}
+                            {row.key === 'sku' && (<div className="text-[13px] text-black/60">{generateSKU(productName, variants, quantity )}</div>)}
                             {row.type === 'select' && ['color','size','memory','ram'].includes(row.key) && (
                                 <div className="text-[13px] text-black/60">
                                     {variants[row.key] || '—'}

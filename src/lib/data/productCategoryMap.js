@@ -1,4 +1,3 @@
-
 const productCategoryMap = {
   "Men's Fashion": {
     categories: {

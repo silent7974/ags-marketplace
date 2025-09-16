@@ -1,4 +1,7 @@
-export default function ProductBasicDetails({ productData, setProductData }) {
+import { generateSKU } from "@/app/utils/sku";
+
+
+export default function ProductBasicDetails({ productData, setProductData, category }) {
   const DISCOUNT_OPTIONS = [5, 10, 20, 50, 75, 90];
 
   // Format price with commas
@@ -48,6 +51,15 @@ export default function ProductBasicDetails({ productData, setProductData }) {
     }
   }
 
+  function updateSKU(name, quantity) {
+    setProductData(prev => ({
+      ...prev,
+      sku: generateSKU(name, {}, quantity) // ✅ pass variants {} & quantity
+    }));
+  }
+
+  
+
   return (
     <form className="max-w-md mt-[24px]">
       {/* Product Name */}
@@ -59,7 +71,16 @@ export default function ProductBasicDetails({ productData, setProductData }) {
         type="text"
         placeholder="Getzner Shadda - Prestige Edition"
         value={productData.productName}
-        onChange={(e) => setProductData(prev => ({ ...prev, productName: e.target.value }))}
+        onChange={(e) => {
+          const newName = e.target.value;
+
+          setProductData(prev => ({
+            ...prev,
+            productName: newName,
+          }));
+          updateSKU(newName, productData.quantity); // ✅ keep SKU live
+        }}
+
         className="w-full h-[36px] rounded-[4px] border border-black/30 px-2 text-black text-[12px] font-inter placeholder-black/50"
       />
 
@@ -122,7 +143,11 @@ export default function ProductBasicDetails({ productData, setProductData }) {
             inputMode="numeric"
             placeholder="0"
             value={productData.quantity || ''}
-            onChange={handleQuantityChange}
+            onChange={(e) => {
+              const value = Number(e.target.value.replace(/\D/g, '') || 0);
+              setProductData(prev => ({ ...prev, quantity: value }));
+              updateSKU(productData.productName, value); // ✅ keep SKU live
+            }}
             className="flex-1 h-full border-none focus:outline-none text-black text-[12px] font-inter placeholder-black/50 ml-1"
           />
         </div>

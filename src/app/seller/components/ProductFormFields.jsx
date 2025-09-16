@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, RulerDimensionLine } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
 import SizeGuide from '@/app/components/SizeGuide'
+import { generateSKU } from '@/app/utils/sku'
 
 
 function CustomDropdown({ label, options, selected, onSelect, placeholder }) {
@@ -168,7 +169,9 @@ export default function ProductFormFields({
   tag,
   setTag,
   trending,
-  setTrending
+  setTrending,
+  productData,           // ✅ we need productData here
+  setProductData         // ✅ so we can update SKU
 }) {
 
   const [showSizeGuide, setShowSizeGuide] = useState(false)
@@ -184,6 +187,14 @@ export default function ProductFormFields({
   }
 
   const v = categoryData.variants
+
+  // ✅ Central SKU updater — called on any variant change
+  function updateSKUWithVariants(newVariants) {
+    setProductData(prev => ({
+      ...prev,
+      sku: generateSKU(prev.productName, newVariants, prev.quantity)
+    }))
+  }
 
   return (
     <div className="space-y-4">
@@ -235,7 +246,11 @@ export default function ProductFormFields({
                 placeholder="Select size"
                 options={v.sizes}
                 selected={variants.size || ''}
-                onSelect={(val) => setVariants({ ...variants, size: val })}
+                onSelect={(val) => {
+                  const updated = { ...variants, size: val }
+                  setVariants(updated)
+                  updateSKUWithVariants(updated)  // ✅ recompute SKU
+                }}
               />
             </>
           )}
@@ -263,7 +278,11 @@ export default function ProductFormFields({
               placeholder="Select memory"
               options={v.memory}
               selected={variants.memory || ''}
-              onSelect={(val) => setVariants({ ...variants, memory: val })}
+              onSelect={(val) => {
+                const updated = { ...variants, memory: val }
+                setVariants(updated)
+                updateSKUWithVariants(updated)
+              }}
             />
           )}
 
@@ -273,14 +292,22 @@ export default function ProductFormFields({
               placeholder="Select RAM"
               options={v.ram}
               selected={variants.ram || ''}
-              onSelect={(val) => setVariants({ ...variants, ram: val })}
+              onSelect={(val) => {
+                const updated = { ...variants, ram: val }
+                setVariants(updated)
+                updateSKUWithVariants(updated)
+              }}
             />
           )}
 
           {v.colors && (
             <ColorDropdown
               selected={variants.color || ''}
-              onSelect={(val) => setVariants({ ...variants, color: val })}
+              onSelect={(val) => {
+                const updated = { ...variants, color: val }
+                setVariants(updated)
+                updateSKUWithVariants(updated)  // ✅ recompute SKU
+              }}
             />
           )}
           
