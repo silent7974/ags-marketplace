@@ -82,8 +82,8 @@ export default function SignUpLayout({ onClose, onSwitchToSignIn  }) {
         </button>
         <div className="flex items-center justify-center gap-[8px] mb-[8px]">
           <Image
-            src="/ags-logo.svg"
-            alt="AGS Logo"
+            src="/malltiply-logo.svg"
+            alt="Malltiply Logo"
             width={96}
             height={32}
             priority

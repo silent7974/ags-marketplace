@@ -15,7 +15,7 @@ export default function Navbar() {
   const [showSearch, setShowSearch] = useState(false)
 
   return (
-    <nav className="w-full flex flex-col px-[16px] relative">
+    <nav className="w-full flex flex-col px-[16px] pt-[48px] relative">
       {/* Top row - Hamburger, Logo, Icons */}
       <div className="flex items-center justify-between w-full">
         {/* Left - Hamburger & Logo */}
@@ -29,8 +29,7 @@ export default function Navbar() {
             />
           </Link>
           <Link className="flex items-center gap-[4px]" href="/">
-            <span className="font-montserrat font-bold text-[32px] text-[#474545]">AGS</span>
-            <Image src="/ags-logo.svg" alt="AGS Logo" width={32} height={32} />
+            <Image src="/malltiply-logo.svg" alt="Malltiply Logo" width={32} height={32} />
           </Link>
         </div>
 

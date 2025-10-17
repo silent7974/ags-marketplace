@@ -20,7 +20,7 @@ export default function MobileOnlyWrapper({ children }) {
         <div>
           <h2 className="text-xl font-semibold mb-2">Mobile Only</h2>
           <p className="text-gray-600">
-            AGS is currently available only for mobile devices. Please switch to a mobile screen to continue.
+            Malltiply is currently available only for mobile devices. Please switch to a mobile screen to continue.
           </p>
         </div>
       </div>

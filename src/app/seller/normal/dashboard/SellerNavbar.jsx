@@ -12,7 +12,7 @@ export default function SellerNavbar() {
   const firstName = fullName ? fullName.split(' ')[0] : "Seller";
 
   return (
-    <nav className="flex justify-between items-center py-4">
+    <nav className="flex justify-between items-center pt-[48px]">
       {/* Left Side */}
       <div className="flex items-center gap-4">
         <Image

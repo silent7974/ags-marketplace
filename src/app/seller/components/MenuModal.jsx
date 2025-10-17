@@ -26,8 +26,8 @@ export default function MenuModal({ onClose }) {
       {/* Logo and AGS Text */}
       <div className="flex flex-col items-center">
         <div className="flex items-center gap-[4px] mb-[32px]">
-          <span className="text-[32px] font-bold text-white font-montserrat">AGS</span>
-          <img src="/ags-logo-white.svg" width={32} height={32} alt="AGS Logo" />
+          <span className="text-[16px] font-bold text-white font-montserrat">Malltiply</span>
+          <img src="/malltiply-logo-white.svg" width={32} height={32} alt="Malltiply Logo" />
         </div>
 
         {/* Navigation Links */}

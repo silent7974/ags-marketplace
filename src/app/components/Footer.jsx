@@ -29,9 +29,9 @@ export default function Footer() {
               </summary>
               <ul className="bg-[#F2F2F2] px-[16px] py-[8px] space-y-[8px] font-[inter] font-normal text-[12px] text-black">
                 <li>
-                  About AGS{" "} <br/>
+                  About Malltiply{" "} <br/>
                   <span className="font-light text-black/50">
-                    AGS - Your Market Place. Your Hustle. Your rules.
+                    Malltiply - Your Market Place. Your Hustle. Your rules.
                   </span>
                 </li>
                 <li>Careers</li>
@@ -88,9 +88,9 @@ export default function Footer() {
               <ul className="bg-[#F2F2F2] px-[16px] py-[8px] space-y-[8px] font-[inter] font-normal text-[12px] text-black">
                 <li>Support center & FAQ</li>
                 <li>Safety center</li>
-                <li>AGS purchase protection</li>
+                <li>Malltiply purchase protection</li>
                 <li>Sitemap</li>
-                <li>Partner with AGS</li>
+                <li>Partner with Malltiply</li>
               </ul>
             </details>
           </div>

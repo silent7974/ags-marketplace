@@ -18,15 +18,15 @@ export default function SellerIndexPage() {
         {/* Left Side: Logo + Text */}
         <div className="flex items-center space-x-2">
           <Image
-            src="/ags-logo2.svg"
-            alt="AGS Logo"
-            width={70}
-            height={27}
+            src="/malltiply-logo-seller.svg"
+            alt="Malltiply Logo"
+            width={32}
+            height={29}
             priority
           />
           <div>
-            <p className="text-white text-[16px] font-semibold font-[Montserrat] leading-none">
-              AGS
+            <p className="text-white text-[16px] mb-[2px] font-semibold font-[Montserrat] leading-none">
+              Malltiply
             </p>
             <p className="text-[#C7C5C5] text-[12px] font-bold font-[Montserrat] leading-none">
               Seller Center
@@ -66,12 +66,12 @@ export default function SellerIndexPage() {
             <div className="absolute top-[2px] left-[16px] flex flex-col space-y-[16px] max-w-[180px]">
                 {/* Main Heading */}
                 <p className="text-white text-[12px] font-black font-[Montserrat] leading-[32px]">
-                Start Selling to thousands<br />of buyers on AGS
+                Start Selling to thousands<br />of buyers on Malltiply
                 </p>
 
                 {/* Subheading */}
                 <p className="text-white text-[8px] font-medium font-[Montserrat] leading-tight">
-                Join AGS and grow faster
+                Join Malltiply and grow faster
                 </p>
 
                 {/* Sign Up Button */}
@@ -127,7 +127,7 @@ export default function SellerIndexPage() {
         {/* Why Sell on AGS Section */}
         <div className="my-[24px] px-[16px] sm:px-[12px] xs:px-[8px]">
           <h2 className="text-[24px] text-center font-semibold font-[Inter] text-[#18331B]">
-            Why Sell on AGS?
+            Why Sell on Malltiply?
           </h2>
 
           {/* Cards Grid */}
@@ -150,7 +150,7 @@ export default function SellerIndexPage() {
 
               {/* Paragraph */}
               <p className="mt-[12px] text-[8px] font-[Montserrat] text-[#303030] leading-[1.2] px-[8px]">
-                AGS puts your products in front of real buyers across Nigeria and beyond.
+                Malltiply puts your products in front of real buyers across Nigeria and beyond.
                 Whether you sell kaftans, accessories, or handmade footwear, we help you stand out – no tech skills needed. Just upload, and start selling.
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function SellerIndexPage() {
               </p>
 
               <p className="mt-[12px] text-[8px] font-[Montserrat] text-[#303030] leading-[1.2] px-[8px]">
-                No complicated dashboards. AGS is built for sellers in our community - simple tools, fast uploads, and a support team that speaks your language when you need help.
+                No complicated dashboards. Malltiply is built for sellers in our community - simple tools, fast uploads, and a support team that speaks your language when you need help.
               </p>
             </div>
 
@@ -206,7 +206,7 @@ export default function SellerIndexPage() {
               </p>
 
               <p className="mt-[12px] text-[8px] font-[Montserrat] text-[#303030] leading-[1.2] px-[8px]">
-                From first sale to loyal customers, AGS gives you insights and tools to grow steadily. Premium sellers also enjoy priority exposure and special campaigns to boost visibility.
+                From first sale to loyal customers, Malltiply gives you insights and tools to grow steadily. Premium sellers also enjoy priority exposure and special campaigns to boost visibility.
               </p>
             </div>
           </div>

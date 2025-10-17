@@ -6,24 +6,24 @@ export default function FaqDropdown() {
 
   const faqData = [
     {
-      question: "How much does it cost to sell on AGS?",
+      question: "How much does it cost to sell on Malltiply?",
       answer:
-        "Selling on AGS is completely free for normal sellers — no signup fees or hidden charges. Premium sellers enjoy advanced store features for a small fee, and we only charge a minimal commission on each successful sale.",
+        "Selling on Malltiply is completely free for normal sellers — no signup fees or hidden charges. Premium sellers enjoy advanced store features for a small fee, and we only charge a minimal commission on each successful sale.",
     },
     {
-      question: "Can I customize my store on AGS?",
+      question: "Can I customize my store on Malltiply?",
       answer:
-        "Yes, premium sellers on AGS can fully customize their stores — from logos and banners to brand colors and product displays. Normal sellers have a standard layout but still enjoy a professional store presence.",
+        "Yes, premium sellers on Malltiply can fully customize their stores — from logos and banners to brand colors and product displays. Normal sellers have a standard layout but still enjoy a professional store presence.",
     },
     {
-      question: "How do I get paid after selling on AGS?",
+      question: "How do I get paid after selling on Malltiply?",
       answer:
         "Payments are made securely through your preferred payout method. Once a buyer completes an order, your funds are processed, and you receive your earnings after a small commission is deducted.",
     },
     {
       question: "What support do I get if I run into problems?",
       answer:
-        "AGS provides 24/7 seller support, including live chat and help center resources. Whether you face technical issues or need sales advice, our team is here to guide you every step of the way.",
+        "Malltiply provides 24/7 seller support, including live chat and help center resources. Whether you face technical issues or need sales advice, our team is here to guide you every step of the way.",
     },
   ];
 

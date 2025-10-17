@@ -56,7 +56,7 @@ export default function SellerSignInPage() {
 
       {/* Title */}
       <h1 className="text-[24px] text-center font-[Inter] font-semibold text-[#000000]">Sign in</h1>
-      <p className="text-[14px] text-center font-[Inter] font-medium text-black/50 mt-[8px]">Welcome back to AGS Seller Center</p>
+      <p className="text-[14px] text-center font-[Inter] font-medium text-black/50 mt-[8px]">Welcome back to Malltiply Seller Center</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Email */}

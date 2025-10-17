@@ -181,7 +181,7 @@ export default function AllLayout() {
                 height={14}
               />
               <span className="text-[12px] text-white font-normal font-inter">
-                Why choose AGS?
+                Why choose Malltiply?
               </span>
             </div>
 

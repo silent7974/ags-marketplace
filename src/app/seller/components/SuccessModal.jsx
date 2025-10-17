@@ -14,7 +14,7 @@ export default function SuccessModal({ onClose }) {
         <CheckCircle size={48} className="text-green-600 mx-auto mb-2" />
         <h2 className="text-lg font-semibold text-[#000000] mb-1">Signup Successful 🎉</h2>
         <p className="text-sm text-[#000000]/50 mb-4">
-          You’re now part of AGS. Sign in to start selling and growing.
+          You’re now part of Malltiply. Sign in to start selling and growing.
         </p>
         <button
           onClick={() => router.push('/seller/signin')}

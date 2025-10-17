@@ -17,19 +17,19 @@ const inter = Inter({
 })
 
 export const metadata = {
-  title: "AGS Marketplace",
-  description: "AGS is a curated e-commerce built for rising fashion and lifestyle brands. Offering buyers a trusted space to discover quality, handcrafted and exclusive products. With premium storefronts, secure payments, and real customer support, AGS makes shopping feel personal and selling feel professional - all from one simple, elegant platform.",
+  title: "Malltiply",
+  description: "Malltiply is a curated e-commerce built for rising fashion and lifestyle brands. Offering buyers a trusted space to discover quality, handcrafted and exclusive products. With premium storefronts, secure payments, and real customer support, Malltiply makes shopping feel personal and selling feel professional - all from one simple, elegant platform.",
   icons: {
-    icon: "/ags-logo.svg",
-    shortcut: "/ags-logo.svg",
-    apple: "/ags-logo.svg",
+    icon: "/malltiply-logo.svg?v=2",
+    shortcut: "/malltiply-logo.svg?v=2",
+    apple: "/malltiply-logo.svg?v=2",
   }
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${inter.variable}`}>
-      <body className="bg-[#f8f9fa] pt-[48px]">
+      <body className="bg-[#f8f9fa] ">
         <ReduxProvider>
           <MobileOnlyWrapper>
             <LayoutWrapper>

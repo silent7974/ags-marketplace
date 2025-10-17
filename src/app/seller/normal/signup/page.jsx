@@ -279,7 +279,7 @@ export default function SellerSignUpNormal() {
 
           {/* Line 1: Sign in */}
           <p className="text-[12px] font-[Inter] font-semibold text-black text-center">
-            Already have an AGS seller account?{' '}
+            Already have an Malltiply seller account?{' '}
             <a href="/seller/normal/signin" className="text-[#005770]">
               Sign in
             </a>
