@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronDown, RulerDimensionLine } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
 import SizeGuide from '@/app/components/SizeGuide'
-import { generateSKU } from '@/app/utils/sku'
+import { generateSKU } from '@/lib/utils/sku'
 
 
 function CustomDropdown({ label, options, selected, onSelect, placeholder }) {

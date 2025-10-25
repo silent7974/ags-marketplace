@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
-import { generateSKU } from '@/app/utils/sku'
+import { generateSKU } from '@/lib/utils/sku'
 
 // --- Your dropdown components unchanged ---
 function CustomCellDropdown({ label, options = [], selected, onSelect, placeholder = 'Select' }) {

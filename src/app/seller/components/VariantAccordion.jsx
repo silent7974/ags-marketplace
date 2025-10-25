@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Plus } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
 import { CustomDropdown } from './ProductFormFields'
-import { generateBaseSKU, generateSKU, generateVariantSKU } from '@/app/utils/sku'
+import { generateBaseSKU, generateSKU, generateVariantSKU } from '@/lib/utils/sku'
 /* -------------------------
   Small reusable UI pieces
    - CustomCellDropdown: a lightweight modal dropdown styled to match AGS

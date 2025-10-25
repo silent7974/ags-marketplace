@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 export default function ProductCard({ product, index }) {
   const hasDiscount = product.discount && product.discount > 0
@@ -13,8 +14,13 @@ export default function ProductCard({ product, index }) {
     return `₦${price.toLocaleString("en-NG")}`
   }
 
+  const router = useRouter()
+
   return (
-    <div key={product._id}>
+    <div 
+      key={product._id}
+      onClick={() => router.push(`/details/${product._id}`)}
+    >
       {/* Product Image */}
       <Image
         src={product.images?.[0]?.url || "/placeholder.png"}

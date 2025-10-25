@@ -1,24 +1,26 @@
 "use client"
 
 import { ShoppingCart, Search } from "lucide-react"
-import Link from "next/link"
-import Image from "next/image"
+import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import SearchModal from "./SearchModal"
 import ProfileModal from "./ProfileModal"
-
+import { useSelector } from "react-redux"
+import { useMeQuery } from "@/redux/services/authApi"
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const [showProfile, setShowProfile] = useState(false)
-  const [showSearch, setShowSearch] = useState(false)
+  const pathname = usePathname();
+  const [showProfile, setShowProfile] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const totalQuantity = useSelector(state => state.cart.totalQuantity);
+  const { data: me } = useMeQuery();
+  const user = me?.user;
 
   return (
     <nav className="w-full flex flex-col px-[16px] pt-[48px] relative">
-      {/* Top row - Hamburger, Logo, Icons */}
       <div className="flex items-center justify-between w-full">
-        {/* Left - Hamburger & Logo */}
         <div className="flex items-center gap-[8px]">
           <Link href="/category">
             <Image
@@ -28,29 +30,45 @@ export default function Navbar() {
               height={32}
             />
           </Link>
+
           <Link className="flex items-center gap-[4px]" href="/">
             <Image src="/malltiply-logo.svg" alt="Malltiply Logo" width={32} height={32} />
           </Link>
         </div>
 
-        {/* Right - User & Cart */}
         <div className="flex items-center gap-[24px] relative">
-          {/* Profile button */}
-          <button onClick={() => setShowProfile((prev) => !prev)}>
+          <button onClick={() => setShowProfile(prev => !prev)}>
             <Image src="/profile.svg" alt="User profile" width={32} height={32} />
           </button>
 
-          {/* Profile Modal */}
           {showProfile && <ProfileModal onClose={() => setShowProfile(false)} />}
 
-          {/* Cart */}
-          <Link href="/cart">
+          {/* Hide badge if not logged in */}
+          <Link href="/cart" className="relative">
             <ShoppingCart size={32} className="text-black" />
+            {user && totalQuantity > 0 && (
+              <div
+                className="absolute flex items-center justify-center"
+                style={{
+                  top: "-4px",
+                  right: "-6px",
+                  width: "22px",
+                  height: "18px",
+                  borderRadius: "8px",
+                  backgroundColor: "#005770",
+                  color: "#ffffff",
+                  fontSize: "9px",
+                  fontFamily: "Inter",
+                  fontWeight: 600,
+                }}
+              >
+                {totalQuantity}
+              </div>
+            )}
           </Link>
         </div>
       </div>
 
-      {/* Search bar row */}
       <div className="w-full flex justify-center mt-[4px]">
         <button
           onClick={() => setShowSearch(true)}
@@ -63,8 +81,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Modals */}
       {showSearch && <SearchModal onClose={() => setShowSearch(false)} />}
     </nav>
-  )
+  );
 }

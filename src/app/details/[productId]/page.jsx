@@ -4,15 +4,16 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useGetProductByIdQuery } from "@/redux/services/productApi";
 import { ChevronDown, Upload, Ruler, ChevronRight } from "lucide-react";
 import productCategoryMap from '@/lib/data/productCategoryMap';
+import FloatingCart from "@/app/components/FloatingCart";
+import AddToCartButton from "@/app/components/AddToCartButton";
 
 export default function ProductDetailsPage({ params }) {
   const unwrappedParams = React.use(params);
   const productId = unwrappedParams.productId;
   const { data: product, isLoading, isError } = useGetProductByIdQuery(productId);
 
-  // =======================
   // STATE
-  // =======================
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -138,7 +139,9 @@ export default function ProductDetailsPage({ params }) {
   // =======================
   return (
     <div className="w-full">
+      <FloatingCart />
       {/* Image Carousel */}
+
       <div
         className="relative py-4 overflow-hidden"
         onTouchStart={handleTouchStart}
@@ -409,6 +412,19 @@ export default function ProductDetailsPage({ params }) {
 
       {/* Closing Separator */}
       <div className="mt-4 w-full h-[4px] bg-[#EEEEEE]" />
+
+      {/* ADD TO CART SECTION */}
+      <AddToCartButton
+        product={product}
+        displayPrice={displayPrice}
+        Originalprice={product.price}
+        selectedColor={selectedColor}
+        selectedSize={selectedSize}
+        selectedQuantity={selectedQuantity}
+        onQuantitySync={setSelectedQuantity}
+      />
+
+
 
     </div>
   );

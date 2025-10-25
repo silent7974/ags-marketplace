@@ -1,21 +1,33 @@
-"use client"
-
-import { usePathname } from "next/navigation"
-import Navbar from "./Navbar"
-import Footer from "./Footer"
-import { useState } from "react"
-import SignInLayout from "./SignInLayout"
-import { useMeQuery } from "@/redux/services/authApi"
+"use client";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setCart } from "@/redux/slices/cartSlice";
+import { useMeQuery } from "@/redux/services/authApi";
+import { useGetCartQuery } from "@/redux/services/cartApi";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import SignInLayout from "./SignInLayout";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function LayoutWrapper({ children }) {
-  const pathname = usePathname()
-  const isSellerRoute = pathname.startsWith("/seller")
+  const pathname = usePathname();
+  const isSellerRoute = pathname.startsWith("/seller");
+  const [showSignIn, setShowSignIn] = useState(false);
 
-  const [showSignIn, setShowSignIn] = useState(false)
+  const { data: me, isLoading: meLoading } = useMeQuery();
+  const user = me?.user;
+  const { data: cartData } = useGetCartQuery(user?._id, { skip: !user });
+  const dispatch = useDispatch();
 
-  // ✅ use RTK Query to check session
-  const { data, isLoading } = useMeQuery()
-  const isSignedIn = !!data?.user
+  // 🧠 Sync backend cart to Redux
+  useEffect(() => {
+    if (cartData?.items) {
+      dispatch(setCart(cartData.items));
+    }
+  }, [cartData, dispatch]);
+
+  const isSignedIn = !!user;
 
   return (
     <>
@@ -23,9 +35,8 @@ export default function LayoutWrapper({ children }) {
       {children}
       {!isSellerRoute && <Footer />}
 
-      {/* ✅ Sign-in CTA for unsigned users */}
-      {!isSellerRoute && !isLoading && !isSignedIn && (
-        <div className="fixed bottom-0 left-0 right-0 bg-black/80 px-4 py-3 flex items-center justify-between">
+      {!isSellerRoute && !meLoading && !isSignedIn && (
+        <div className="fixed bottom-0 z-[2000] left-0 right-0 bg-black/80 px-4 py-3 flex items-center justify-between">
           <p className="text-white font-inter font-bold text-[12px]">
             Sign in for the best experience
           </p>
@@ -38,8 +49,7 @@ export default function LayoutWrapper({ children }) {
         </div>
       )}
 
-      {/* 🔥 Modal for SignInLayout */}
       {showSignIn && <SignInLayout onClose={() => setShowSignIn(false)} />}
     </>
-  )
+  );
 }

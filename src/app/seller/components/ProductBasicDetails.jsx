@@ -1,4 +1,4 @@
-import { generateSKU } from "@/app/utils/sku";
+import { generateSKU } from "@/lib/utils/sku";
 
 
 export default function ProductBasicDetails({ productData, setProductData, category }) {
