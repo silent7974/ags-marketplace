@@ -12,6 +12,8 @@ import {
 import { removeItem, clearCart, updateQuantity } from "@/redux/slices/cartSlice";
 import formatPrice from "@/lib/utils/formatPrice";
 import productCategoryMap from "@/lib/data/productCategoryMap";
+import AddNewAddress from "../components/AddNewAddress";
+import CheckoutPage from "../components/CheckoutPage";
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -20,6 +22,12 @@ export default function CartPage() {
   const [updateCartItemApi] = useUpdateCartItemMutation();
   const [clearCartApi] = useClearCartMutation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const [showAddressModal, setShowAddressModal] = useState(false);
+
+  const handleCheckout = () => {
+      setShowAddressModal(true);
+    };
 
   const totalQuantity = cart.items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = cart.items.reduce(
@@ -30,6 +38,15 @@ export default function CartPage() {
     (sum, i) => sum + i.price * i.quantity,
     0
   );
+
+    function getProductId(item) {
+      return typeof item.productId === "object"
+        ? item.productId._id
+        : item.productId;
+    }
+
+  const [showCheckoutPage, setShowCheckoutPage] = useState(false);
+
 
   const [selectedIds, setSelectedIds] = useState([]);
   const allSelected = selectedIds.length === cart.items.length && cart.items.length > 0;
@@ -190,7 +207,7 @@ export default function CartPage() {
 
       {/* Notice */}
       <div className="flex items-center justify-between border border-black/20 rounded-[2px] p-2">
-        <div className="flex items-center gap-2 text-[#099404]">
+        <div className="flex items-center gap-2 text-[#1A7709]">
           <Check size={19} />
           <span className="text-[12px] font-inter font-medium">
             Free delivery across Abuja
@@ -237,7 +254,7 @@ export default function CartPage() {
 
             return (
               <div
-                key={`${item.productId}-${item.color || 'nocolor'}-${item.size || 'nosize'}`}
+                key={`${getProductId(item)}-${item.color || "x"}-${item.size || "x"}`}
                 className="flex items-start gap-2 pb-2"
               >
 
@@ -264,13 +281,14 @@ export default function CartPage() {
                     className="object-cover rounded-[4px]"
                   />
                   {item.quantity < 20 && (
-                    <div className="absolute bottom-[2px] left-1/2 -translate-x-1/2 w-[82px] h-[16px] bg-black/50 rounded-[47px] flex items-center justify-center">
-                      <p className="text-[7px] text-white font-montserrat font-medium">
+                    <div className="absolute inset-x-[2px] bottom-[2px] bg-black/50 rounded-[47px] flex items-center justify-center px-1 py-[1px]">
+                      <p className="text-[6px] text-white font-montserrat font-bold text-center break-words">
                         ALMOST SOLD OUT
                       </p>
                     </div>
                   )}
                 </div>
+
 
                 {/* Info */}
                 <div className="flex-1 border-b border-black/20 pb-2">
@@ -353,7 +371,7 @@ export default function CartPage() {
 
       {/* Bottom Summary Bar */}
       {cart.items.length > 0 && (
-        <div className="fixed bottom-0 left-0 w-full h-[100px] bg-white border-t border-black/10 flex justify-center items-center z-50">
+        <div className="fixed bottom-0 left-0 w-full h-[64px] bg-white border-t border-black/10 flex justify-center items-center z-50">
           <div className="flex items-center justify-between w-[90%] max-w-[400px]">
             <div className="flex flex-col">
               <p className="text-[14px] font-inter line-through text-black">
@@ -366,6 +384,7 @@ export default function CartPage() {
 
             <motion.button
               whileTap={{ scale: 0.97 }}
+              onClick={handleCheckout}
               className="w-[200px] h-[48px] bg-[#005770] rounded-[44px] text-white font-inter font-semibold text-[20px] flex items-center justify-center gap-2 shadow-lg"
             >
               Checkout ({totalQuantity})
@@ -373,6 +392,43 @@ export default function CartPage() {
           </div>
         </div>
       )}
+
+      {/* Slide-in Add Address Modal */}
+      <AnimatePresence>
+        {showAddressModal && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.35 }}
+            className="fixed top-0 right-0 w-full max-w-[420px] h-full bg-white z-[999] shadow-2xl overflow-y-auto"
+          >
+            <AddNewAddress
+              onClose={() => setShowAddressModal(false)}
+              onSaveSuccess={() => {
+                setShowAddressModal(false);
+                setShowCheckoutPage(true); // open CheckoutPage instead of window.location.href
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCheckoutPage && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.35 }}
+            className="fixed top-0 right-0 w-full max-w-[420px] h-full bg-white z-[999] shadow-2xl overflow-y-auto"
+          >
+            <CheckoutPage
+              onClose={() => setShowCheckoutPage(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -209,7 +209,7 @@ export default function AddToCartButton({
         )}
 
       {/* Bottom Add/Cart Control */}
-      <div className="fixed bottom-0 left-0 w-full h-[100px] bg-white border-t border-black/10 flex justify-center items-center z-50">
+      <div className="fixed bottom-0 left-0 w-full h-[88px] bg-white border-t border-black/10 flex justify-center items-center z-50">
         <AnimatePresence mode="wait">
           {!isInCart ? (
             <motion.button

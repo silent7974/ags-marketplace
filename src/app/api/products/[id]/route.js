@@ -3,7 +3,7 @@ import dbConnect from "@/lib/mongodb"
 
 export async function GET(req, { params }) {
   await dbConnect()
-  const { id } = params
+  const { id } = await params
 
   const product = await Product.findById(id)
   if (!product) {
@@ -47,7 +47,7 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
   await dbConnect();
-  const { id } = params;
+  const { id } = await params;
 
   const deletedProduct = await Product.findByIdAndDelete(id);
 

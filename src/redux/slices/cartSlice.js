@@ -62,11 +62,11 @@ const cartSlice = createSlice({
         }
       }
 
-      state.totalQuantity = state.items.reduce((sum, i) => sum + i.quantity, 0);
-      state.totalPrice = state.items.reduce((sum, i) => sum + i.quantity * i.price, 0);
-      state.totalDiscountedPrice = state.items.reduce((sum, i) => sum + i.quantity * i.discountedPrice, 0);
+      state.totalQuantity = state.items.reduce((sum, i) => sum + i.quantity, 0)
+      state.totalPrice = state.items.reduce((sum, i) => sum + i.quantity * i.price, 0)
+      state.totalDiscountedPrice = state.items.reduce((sum, i) => sum + i.quantity * i.discountedPrice, 0)
 
-      localStorage.setItem("cart", JSON.stringify(state));
+      localStorage.setItem("cart", JSON.stringify(state))
     },
 
     // ❌ Remove single item (clean and explicit)

@@ -35,6 +35,14 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["Auth"],
     }),
+    updateProfile: builder.mutation({
+      query: (data) => ({
+        url: "/profile",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
   }),
 });
 
@@ -43,4 +51,5 @@ export const {
   useSigninMutation,
   useMeQuery,
   useSignoutMutation,
+  useUpdateProfileMutation,
 } = authApi;

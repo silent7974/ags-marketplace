@@ -24,8 +24,18 @@ export async function DELETE() {
   }
 
   try {
-    // 🛒 Find user's cart
-    const cart = await Cart.findOne({ userId: decoded.id });
+    const cart = await Cart.findOneAndUpdate(
+      { userId: decoded.id },
+      {
+        $set: {
+          items: [],
+          totalQuantity: 0,
+          totalPrice: 0,
+          totalDiscountedPrice: 0,
+        },
+      },
+      { new: true }
+    );
 
     if (!cart) {
       return NextResponse.json(
@@ -34,20 +44,8 @@ export async function DELETE() {
       );
     }
 
-    // 🧹 Clear all items
-    cart.items = [];
-    cart.totalQuantity = 0;
-    cart.totalPrice = 0;
-    cart.totalDiscountedPrice = 0;
-
-    await cart.save();
-
     return NextResponse.json(
-      {
-        message: "Cart cleared successfully",
-        cleared: true,
-        cart,
-      },
+      { message: "Cart cleared successfully", cleared: true, cart },
       { status: 200 }
     );
   } catch (err) {
