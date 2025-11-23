@@ -11,6 +11,7 @@ import {
   useRemoveCartItemMutation,
 } from "@/redux/services/cartApi";
 import { useMeQuery } from "@/redux/services/authApi";
+import Toast from "./Toast";
 
 export default function AddToCartButton({
   product,
@@ -20,6 +21,8 @@ export default function AddToCartButton({
   selectedSize,
   selectedQuantity,
   onQuantitySync,
+  displaySku,
+  isOutOfStock
 }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -31,6 +34,13 @@ export default function AddToCartButton({
   const [addToCartApi] = useAddToCartMutation();
   const [updateCartApi] = useUpdateCartItemMutation();
   const [removeCartApi] = useRemoveCartItemMutation();
+
+  const [toast, setToast] = useState({ show: false, message: "" });
+
+  function triggerToast(msg) {
+    setToast({ show: true, message: msg });
+    setTimeout(() => setToast({ show: false, message: "" }), 1500);
+  }
 
   // ✅ Detect existing variant in cart
   const currentItem =
@@ -63,6 +73,11 @@ export default function AddToCartButton({
   const handleAddToCart = async (e) => {
     if (!user) {
       alert("Please sign in before adding to cart.");
+      return;
+    }
+
+    if (isOutOfStock || product.quantity === 0) {
+      alert("This item is out of stock.");
       return;
     }
 
@@ -103,12 +118,18 @@ export default function AddToCartButton({
       color: selectedColor,
       size: selectedSize,
       quantity: selectedQuantity,
+      sku: displaySku
     };
 
     // Add to redux + backend
     dispatch(addToCart(item));
+    triggerToast("Item added successfully to cart ✔");
     try {
-      await addToCartApi(item).unwrap();
+      const response = await addToCartApi(item).unwrap();
+
+      if (response?.success) {
+        if (onSuccess) onSuccess();
+      }
     } catch (err) {
       console.error("Backend addToCart failed:", err);
     }
@@ -128,6 +149,7 @@ export default function AddToCartButton({
 
     // Prevent invalid values
     if (newQuantity <= 0) {
+      triggerToast("Item removed successfully from cart ❌");
       // Remove from cart
       dispatch(
         removeItem({
@@ -177,6 +199,7 @@ export default function AddToCartButton({
 
   return (
     <>
+      <Toast message={toast.message} show={toast.show} />
       {/* 🎈 Bubble Animation */}
       {clientReady &&
         createPortal(

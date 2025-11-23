@@ -53,8 +53,8 @@ export default function OrdersPage() {
   }, []);
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
-      <p className="text-[20px] font-inter">Thank you! Your order is confirmed.</p>
+    <div className="w-full px-[16px] h-screen flex justify-center items-center">
+      <p className="text-[20px] text-center font-inter">Thank you! Your order is confirmed.</p>
     </div>
   );
 }

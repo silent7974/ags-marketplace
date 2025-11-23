@@ -11,6 +11,16 @@ const VariantSchema = new mongoose.Schema(
   { _id: false, strict: false } // variants can take any shape backend sends
 )
 
+const VariantColumnSchema = new mongoose.Schema(
+  {
+    color: String,
+    quantity: Number,
+    price: Number,
+    sku: String,
+  },
+  { _id: false, strict: false }
+)
+
 const ProductSchema = new mongoose.Schema(
   {
     sellerId: {
@@ -19,6 +29,7 @@ const ProductSchema = new mongoose.Schema(
     },
     productName: String,
     description: String,
+    quantity: Number,
     price: Number,
     formattedPrice: String,
     discountedPrice: Number,
@@ -30,6 +41,7 @@ const ProductSchema = new mongoose.Schema(
     trending: String,
     useCase: String,
     sku: String,
+
     variants: [VariantSchema],
     images: [
       {
@@ -37,6 +49,10 @@ const ProductSchema = new mongoose.Schema(
         public_id: String,
       },
     ],
+
+    // ⬇️ ADD THIS EXACTLY HERE
+    variantColumns: [VariantColumnSchema],
+
     createdAt: {
       type: Date,
       default: Date.now,
@@ -46,7 +62,7 @@ const ProductSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { timestamps: true, strict: false } // let backend control structure
+  { timestamps: true, strict: false }
 )
 
 // In ProductSchema definition

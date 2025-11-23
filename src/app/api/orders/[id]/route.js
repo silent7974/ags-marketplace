@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Order from "@/models/order";
+import Product from "@/models/product";
 
-export async function GET(req, context) {
-  const { params } = await context;
-  const { id } = params;
+export async function PATCH(req, context) {
+  const { id } = await context.params;
 
   await dbConnect();
+
+  const { status } = await req.json();
 
   try {
     const order = await Order.findById(id);
@@ -14,31 +16,51 @@ export async function GET(req, context) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ success: true, order }, { status: 200 });
-  } catch (err) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
-}
+    if (status === "paid" && order.paymentStatus !== "paid") {
+      for (const item of order.items) {
+        const { productId, sku, quantity } = item;
 
-export async function PATCH(req, context) {
-  const { params } = await context;
-  const { id } = params;
+        const product = await Product.findById(productId);
+        if (!product) continue;
 
-  await dbConnect();
+        // ---------- BASE PRODUCT ----------
+        if (String(product.sku).trim() === String(sku).trim()) {
 
-  const { status } = await req.json();
+          const newQty = Math.max((product.quantity || 0) - quantity, 0);
 
-  try {
-    const order = await Order.findByIdAndUpdate(
-      id,
-      { paymentStatus: status },
-      { new: true }
-    );
+          product.set("quantity", newQty);   // 🔥 FORCE MONGOOSE TO TRACK CHANGE
 
-    return NextResponse.json(
-      { message: "Order updated", order },
-      { status: 200 }
-    );
+          const parts = product.sku.split("-");
+          parts[parts.length - 1] = String(newQty).padStart(2, "0");
+          product.set("sku", parts.join("-"));  // 🔥 USE set()
+        }
+
+        // ---------- VARIANT PRODUCT ----------
+        const variant = product.variantColumns?.find(
+          v => String(v.sku).trim() === String(sku).trim()
+        );
+
+        if (variant) {
+          const vNewQty = Math.max((variant.quantity || 0) - quantity, 0);
+
+          variant.quantity = vNewQty;
+
+          const vParts = variant.sku.split("-");
+          vParts[vParts.length - 1] = String(vNewQty).padStart(2, "0");
+          variant.sku = vParts.join("-");
+
+          product.markModified("variantColumns");
+        }
+
+        await product.save();
+      }
+    }
+
+    order.paymentStatus = status;
+    await order.save();
+
+    return NextResponse.json({ message: "Order updated", order }, { status: 200 });
+
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

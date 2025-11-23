@@ -11,3 +11,4 @@
 - [ ] Must study more of inventory tracking (How does it work if they're multiple same sku in the database?, In FeaturedSection.jsx what if the base product is not      under limited stock but one of it variant is?)
 - [] What happens in productSchema and cartSchema when a product has a memory, measurement, RAM or other variant attributes aside colors and sizes?
 - [] The cart button in the productDetailspage transitions back to "Add to cart" after every tap on a '-' or '+' button
+- [] The AddToCartButton and the "+" button in cart page exceeds the stock of item left

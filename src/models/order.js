@@ -9,6 +9,7 @@ const OrderItemSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   price: Number,
   discountedPrice: Number,
+  sku: String,
 }, { _id: false });
 
 const OrderSchema = new mongoose.Schema({

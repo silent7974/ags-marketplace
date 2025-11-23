@@ -37,7 +37,8 @@ export async function POST(req) {
     return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 
-  const { productId, color, size, quantity = 1 } = await req.json();
+  const { productId, color, size, quantity = 1, sku } = await req.json();
+
   const product = await Product.findById(productId);
   if (!product) return NextResponse.json({ error: "Product not found" }, { status: 404 });
 
@@ -48,8 +49,9 @@ export async function POST(req) {
     i => i.productId.equals(productId) && i.color === color && i.size === size
   );
 
-  if (existing) existing.quantity += quantity;
-  else
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
     cart.items.push({
       productId,
       name: product.productName,
@@ -59,7 +61,9 @@ export async function POST(req) {
       color,
       size,
       quantity,
+      sku // now valid
     });
+  }
 
   cart.totalQuantity = cart.items.reduce((sum, i) => sum + i.quantity, 0);
   cart.totalPrice = cart.items.reduce((sum, i) => sum + i.quantity * i.price, 0);

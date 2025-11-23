@@ -8,6 +8,7 @@ const CartItemSchema = new mongoose.Schema({
   image: String,
   color: String,
   size: String,
+  sku: String,
   quantity: { type: Number, default: 1 },
 }, { _id: false });
 

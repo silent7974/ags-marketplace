@@ -134,9 +134,8 @@ export default function ProductDetailsPage({ params }) {
   const images = product.images || [];
   const formatPrice = (price) => new Intl.NumberFormat("en-NG").format(price || 0);
 
-  // =======================
-  // RENDER
-  // =======================
+  const isOutOfStock = displayQuantity === 0;
+
   return (
     <div className="w-full">
       <FloatingCart />
@@ -313,7 +312,7 @@ export default function ProductDetailsPage({ params }) {
                   className="font-inter font-bold text-white"
                   style={{ fontSize: "8px" }}
                 >
-                  Only {displayQuantity} left
+                  {isOutOfStock ? "Out of stock" : `${displayQuantity} left`}
                 </span>
               </div>
             )}
@@ -422,6 +421,9 @@ export default function ProductDetailsPage({ params }) {
         selectedSize={selectedSize}
         selectedQuantity={selectedQuantity}
         onQuantitySync={setSelectedQuantity}
+        displaySku={displaySku}
+        onSuccess={() => alert("Added to cart successfully!")}
+        isOutOfStock={isOutOfStock}
       />
 
 
