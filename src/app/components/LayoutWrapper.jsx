@@ -1,20 +1,25 @@
 "use client";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { setCart } from "@/redux/slices/cartSlice";
+import { fetchSellerProfile } from "@/redux/slices/sellerProfileSlice";
 import { useMeQuery } from "@/redux/services/authApi";
 import { useGetCartQuery } from "@/redux/services/cartApi";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SignInLayout from "./SignInLayout";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
 
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname();
-  const isSellerRoute = pathname.startsWith("/seller");
-  const [showSignIn, setShowSignIn] = useState(false);
 
+  const isSellerRoute = pathname.startsWith("/seller");
+  const isStoreRoute = pathname.startsWith("/stores/");
+  const hideChrome = isSellerRoute || isStoreRoute;
+
+  const [showSignIn, setShowSignIn] = useState(false);
+  const status = useSelector((state) => state.sellerProfile.status);
   const { data: me, isLoading: meLoading } = useMeQuery();
   const user = me?.user;
   const { data: cartData } = useGetCartQuery(user?._id, { skip: !user });
@@ -27,15 +32,23 @@ export default function LayoutWrapper({ children }) {
     }
   }, [cartData, dispatch]);
 
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchSellerProfile());
+    }
+  }, [status, dispatch]);
+
   const isSignedIn = !!user;
 
   return (
     <>
-      {!isSellerRoute && <Navbar />}
-      {children}
-      {!isSellerRoute && <Footer />}
+      {!hideChrome && <Navbar />}
 
-      {!isSellerRoute && !meLoading && !isSignedIn && (
+      {children}
+
+      {!hideChrome && <Footer />}
+
+      {!meLoading && !isSignedIn && (
         <div className="fixed bottom-0 z-[2000] left-0 right-0 bg-black/80 px-4 py-3 flex items-center justify-between">
           <p className="text-white font-inter font-bold text-[12px]">
             Sign in for the best experience

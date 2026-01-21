@@ -1,49 +1,6 @@
 import { generateSKU } from "@/lib/utils/sku";
 
-
-export default function ProductBasicDetails({ productData, setProductData, category }) {
-  const DISCOUNT_OPTIONS = [5, 10, 20, 50, 75, 90];
-
-  // Format price with commas
-  function formatPrice(value) {
-    if (!value) return '';
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-
-  // Handle discount change
-  function handleDiscountChange(e) {
-    const discountValue = parseFloat(e.target.value) || 0;
-    const priceNum = Number(productData.price || 0);
-
-    const discountedPrice = priceNum - (priceNum * discountValue / 100);
-
-    setProductData(prev => ({
-      ...prev,
-      discount: discountValue,
-      discountedPrice
-    }));
-  }
-
-  // Handle price input change (digits only)
-  function handlePriceChange(e) {
-    const rawValue = e.target.value.replace(/[^0-9]/g, ''); // digits only
-    const priceNum = Number(rawValue || 0);
-    const discountPercent = parseFloat(productData.discount) || 0;
-
-    const discountedPrice = priceNum - (priceNum * discountPercent / 100);
-
-    setProductData(prev => ({
-      ...prev,
-      price: priceNum,
-      formattedPrice: formatPrice(rawValue),
-      discountedPrice
-    }));
-  }
-
-  function handleQuantityChange(e) {
-    const value = e.target.value.replace(/\D/g, '');
-    setProductData(prev => ({ ...prev, quantity: Number(value || 0) }));
-  }
+export default function ProductBasicDetails({ productData, setProductData }) {
 
   function handleDescriptionChange(e) {
     if (e.target.value.length <= 110) {
@@ -56,9 +13,7 @@ export default function ProductBasicDetails({ productData, setProductData, categ
       ...prev,
       sku: generateSKU(name, {}, quantity) // ✅ pass variants {} & quantity
     }));
-  }
-
-  
+  } 
 
   return (
     <form className="max-w-md mt-[24px]">
@@ -70,7 +25,7 @@ export default function ProductBasicDetails({ productData, setProductData, categ
         id="productName"
         type="text"
         placeholder="Getzner Shadda - Prestige Edition"
-        value={productData.productName}
+        value={productData.productName ?? ''}
         onChange={(e) => {
           const newName = e.target.value;
 
@@ -84,8 +39,6 @@ export default function ProductBasicDetails({ productData, setProductData, categ
         className="w-full h-[36px] rounded-[4px] border border-black/30 px-2 text-black text-[12px] font-inter placeholder-black/50"
       />
 
-      {/* Price and Discount */}
-      <div className="flex gap-[12px] mt-4">
         {/* Price */}
         <div className="flex-1 flex flex-col">
           <label htmlFor="price" className="block text-black text-[16px] font-inter font-normal mb-2">
@@ -98,38 +51,16 @@ export default function ProductBasicDetails({ productData, setProductData, categ
               type="text"
               inputMode="numeric"
               placeholder="0"
-              value={productData.formattedPrice || ''}
-              onChange={handlePriceChange}
+              value={productData.price || ''}
+              onChange={(e) => {
+                const rawValue = e.target.value.replace(/[^0-9]/g, '')
+                const priceNum = Number(rawValue || 0)
+                setProductData(prev => ({ ...prev, price: priceNum }))
+              }}
               className="flex-1 h-full border-none focus:outline-none text-black text-[12px] font-inter placeholder-black/50 ml-1"
             />
           </div>
         </div>
-
-        {/* Discount */}
-        <div className="flex-1 flex flex-col">
-          <label htmlFor="discount" className="block text-black text-[16px] font-inter font-normal mb-2">
-            Discount
-          </label>
-          <select
-            id="discount"
-            value={productData.discount || ''}
-            onChange={handleDiscountChange}
-            className="w-full h-[36px] rounded-[4px] border border-black/30 px-[2px] text-black text-[12px] font-inter"
-          >
-            <option value="" disabled>
-              Select discount
-            </option>
-            {DISCOUNT_OPTIONS.map((option) => (
-              <option key={option} value={option}>
-                {option}%
-              </option>
-            ))}
-          </select>
-          <p className="mt-1 text-black/50 text-[8px] text-right font-inter">
-            Discounted items get more clicks and sales
-          </p>
-        </div>
-      </div>
 
       {/* Quantity */}
       <div className="flex-1 flex flex-col mt-4">
@@ -142,7 +73,7 @@ export default function ProductBasicDetails({ productData, setProductData, categ
             type="text"
             inputMode="numeric"
             placeholder="0"
-            value={productData.quantity || ''}
+            value={productData.quantity ?? '' }
             onChange={(e) => {
               const value = Number(e.target.value.replace(/\D/g, '') || 0);
               setProductData(prev => ({ ...prev, quantity: value }));
@@ -160,7 +91,7 @@ export default function ProductBasicDetails({ productData, setProductData, categ
       <textarea
         id="description"
         placeholder={`Original Getzner shadda with a rich texture and smooth finish. Ideal for traditional wear and special events.`}
-        value={productData.description || ''}
+        value={productData.description ?? ''}
         onChange={handleDescriptionChange}
         rows={6}
         style={{ resize: 'none' }}

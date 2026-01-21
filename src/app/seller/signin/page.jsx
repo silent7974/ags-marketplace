@@ -34,18 +34,27 @@ export default function SellerSignInPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setLoading(true)
-    setServerError(null)
+    setLoading(true);
+    setServerError(null);
 
     try {
-      await signin(form).unwrap();
-      router.push("/seller/normal/dashboard");
+      const response = await signin(form).unwrap();
+      
+      // Assuming response contains sellerType
+      if (response.sellerType === "premium_seller") {
+        router.push("/seller/premium/dashboard");
+      } else {
+        router.push("/seller/normal/dashboard");
+      }
     } catch (err) {
       console.error("Signin failed:", err);
+      setServerError(err.data?.message || "Signin failed");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="w-full px-[16px] py-[40px]">

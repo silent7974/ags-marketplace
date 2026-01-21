@@ -9,6 +9,18 @@
 - [ ] In AllTabContent.jsx there's a "0" that shows next to prices of products that don't have discounts
 - [ ] The modal (ProfileModal.jsx) is not responsive as screen gets smaller
 - [ ] Must study more of inventory tracking (How does it work if they're multiple same sku in the database?, In FeaturedSection.jsx what if the base product is not      under limited stock but one of it variant is?)
-- [] What happens in productSchema and cartSchema when a product has a memory, measurement, RAM or other variant attributes aside colors and sizes?
-- [] The cart button in the productDetailspage transitions back to "Add to cart" after every tap on a '-' or '+' button
-- [] The AddToCartButton and the "+" button in cart page exceeds the stock of item left
+- [ ] What happens in productSchema and cartSchema when a product has a memory, measurement, RAM or other variant attributes aside colors and sizes?
+- [ ] The cart button in the productDetailspage transitions back to "Add to cart" after every tap on a '-' or '+' button
+- [ ] The AddToCartButton and the "+" button in cart page exceeds the stock of item left
+- [ ] User fullName and phone are under shippingAddress in the orderSchema but they don't get saved probably because frontend (CheckoutPage.jsx) doesn't send them
+- [ ] Total calculation of a single order is only accurate under "All" seller-side. (All carousels can share a template)
+- [ ] After signing in as a normal seller I get redirected to the signin page until I manually change the URL to /seller/normal/dashboard
+- [ ] When I try to get inside /normal/dashboard/settings it keeps sending infinite GET request to fetch the profile and doesn't load at all
+- [ ] In the MenuModal (signed in as a premium seller) the "Logout" button is not visible and I can't tell if it's just below until I make the modal scrollable or it just doesn't exist at all ✅
+- [ ] Forms need placeholders and more polishing (forgot password needs to work)
+- [ ] Cart page is not protected - anybody could visit anybody's cart even a non-user (guest)
+- [ ] Categories' suggestions from AddCategoryModal must be smart not static
+- [ ] Use case, trending and tags must exist but infered not inputed by seller
+- [ ] The input field in ColorPickerModal does not modify the chosen color
+- [ ] Heavy images should not be allowed.
+- [ ] Redisign store card in /premium/dashboard

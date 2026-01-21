@@ -1,16 +1,5 @@
 import mongoose from "mongoose";
 
-
-const VariantSchema = new mongoose.Schema(
-  {
-    color: String,
-    size: String,
-    quantity: Number,
-    sku: String,
-  },
-  { _id: false, strict: false } // variants can take any shape backend sends
-)
-
 const VariantColumnSchema = new mongoose.Schema(
   {
     color: String,
@@ -19,30 +8,38 @@ const VariantColumnSchema = new mongoose.Schema(
     sku: String,
   },
   { _id: false, strict: false }
-)
+);
 
 const ProductSchema = new mongoose.Schema(
   {
     sellerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Seller",
+      index: true,
     },
+
+    // 🔗 STORE CONNECTION
+    storeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Store",
+      index: true,
+    },
+
     productName: String,
     description: String,
     quantity: Number,
     price: Number,
-    formattedPrice: String,
-    discountedPrice: Number,
-    discount: Number,
     category: String,
     subCategory: String,
     subType: String,
-    tag: String,
-    trending: String,
-    useCase: String,
     sku: String,
 
-    variants: [VariantSchema],
+    variants: {
+      color: String,
+      size: String,
+      measurement: String,
+    },
+
     images: [
       {
         url: String,
@@ -50,35 +47,28 @@ const ProductSchema = new mongoose.Schema(
       },
     ],
 
-    // ⬇️ ADD THIS EXACTLY HERE
-    variantColumns: [VariantColumnSchema],
+    adVideo: {
+      url: String,
+      public_id: String,
+      duration: Number,
+      width: Number,
+      height: Number,
+    },
 
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+    variantColumns: [VariantColumnSchema],
   },
   { timestamps: true, strict: false }
-)
+);
 
-// In ProductSchema definition
+// 🔍 SEARCH INDEX
 ProductSchema.index({
   productName: "text",
   description: "text",
   category: "text",
   subCategory: "text",
   subType: "text",
-  tag: "text",
-  trending: "text",
-  useCase: "text",
-  "variants.color": "text",   // ✅ searchable color
-  "variants.size": "text",    // ✅ searchable size
-})
+  "variants.color": "text",
+  "variants.size": "text",
+});
 
-
-export default mongoose.models.Product ||
-  mongoose.model("Product", ProductSchema)
+export default mongoose.models.Product || mongoose.model("Product", ProductSchema);

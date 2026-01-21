@@ -1,128 +1,103 @@
 'use client'
 
 import { useRouter } from "next/navigation"
-import { useSelector } from "react-redux"
-import { useGetProductsQuery } from "@/redux/services/productApi" // import hook
+import { useDispatch } from "react-redux"
+import { useGetProductsQuery } from "@/redux/services/productApi"
+import {
+  setCurrentProduct,
+  resetCurrentProduct,
+} from '@/redux/slices/productSlice'
+import formatPrice from "@/lib/utils/formatPrice"
 
 export default function ProductsOverview() {
-  // fire the query once to populate slice
-  useGetProductsQuery()
-
-  // then read from slice
-  const { items: products, isLoading, isError } = useSelector((state) => state.products)
-  const productCount = products?.length || 0
-  const productText = productCount === 1 ? 'product' : 'products'
   const router = useRouter()
+  const dispatch = useDispatch()
+
+  const { data: products = [], isLoading, isError } = useGetProductsQuery()
+  const productCount = products.length
+  const productText = productCount === 1 ? 'product' : 'products'
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error loading products</div>
 
+  const handleEdit = (product) => {
+    dispatch(setCurrentProduct({
+      _id: product._id,
+      productName: product.productName || '',
+      subCategory: product.subCategory || '',
+      subType: product.subType || '',
+      price: product.price || 0,
+      quantity: product.quantity || 0,
+      description: product.description || '',
+      images: product.images || [],
+      variants: product.variants || {},
+      variantColumns: product.variantColumns || [],
+    }))
+    router.push('/seller/normal/dashboard/products/form')
+  }
+
   return (
     <div>
-      <h1
-        style={{
-          fontFamily: 'Montserrat, sans-serif',
-          fontWeight: 500,
-          fontSize: '20px',
-          color: '#000000',
-          marginBottom: '4px',
-        }}
-      >
-        My Products
-      </h1>
-
-      <p
-        style={{
-          fontFamily: 'Montserrat, sans-serif',
-          fontWeight: 500,
-          fontSize: '16px',
-          color: 'rgba(0, 0, 0, 0.5)',
-          marginTop: 0,
-          marginBottom: '24px',
-        }}
-      >
+      <h1 className="mt-4 mb-1 font-montserrat font-medium text-[20px]">My Products</h1>
+      <p className="mb-6 font-montserrat font-medium text-[16px] text-black/50">
         Overview of your {productCount} {productText}
       </p>
 
-      {/* Upload Product Card */}
+      {/* Upload Product */}
       <div className="flex justify-center">
-        <button 
+        <button
           className="w-[301px] mb-[48px] h-[236px] rounded-[16px] bg-[#7B00C3] flex flex-col items-center"
           onClick={() => {
-            router.push('/seller/normal/dashboard/products/add');
+            dispatch(resetCurrentProduct())
+            router.push('/seller/normal/dashboard/products/form')
           }}
         >
-          <img
-            src="/upload-illustration.svg"
-            alt="Upload"
-            className="w-[140px] mt-9"
-          />
-          <p className="mt-3.5 text-[20px] font-semibold font-inter text-white text-center">
-            Upload your product
-          </p>
+          <img src="/upload-illustration.svg" alt="Upload" className="w-[140px] mt-9" />
+          <p className="mt-3.5 text-[20px] font-semibold font-inter text-white">Upload your product</p>
         </button>
       </div>
 
-      {/* Grid container */}
+      {/* Products Grid */}
       <div className="grid grid-cols-2 gap-x-2 gap-y-[8px] w-full max-w-[360px]">
-      {products?.map((product, index) => {
-        const firstImage = product.images?.[0]
-        const showDiscount =
-          product.discountedPrice && product.discountedPrice < product.price
+        {products.map((product, index) => {
+          const firstImage = product.images?.[0]
+          const showDiscount = product.discountedPrice && product.discountedPrice < product.price
 
-        return (
-          <div
-            key={product._id}
-            onClick={() =>
-              router.push(`/seller/normal/dashboard/products/edit/${product._id}`)
-            }
-            className={`relative w-full h-[248px] rounded-[8px] overflow-hidden bg-gray-900 flex flex-col justify-end py-[16px] cursor-pointer ${
-              index % 2 === 1 ? "mt-[24px]" : ""
-            }`}
-          >
-            {firstImage ? (
-              <img
-                src={firstImage.url}
-                alt={product.productName}
-                className="absolute inset-0 w-full h-full object-cover rounded-[8px]"
-              />
-            ) : (
-              <div className="absolute inset-0 bg-gray-700 rounded-[8px]" />
-            )}
+          return (
+            <div
+              key={product._id}
+              onClick={() => handleEdit(product)}
+              className={`relative w-full h-[248px] rounded-[8px] overflow-hidden bg-gray-900 flex flex-col justify-end py-[16px] cursor-pointer ${
+                index % 2 === 1 ? "mt-[24px]" : ""
+              }`}
+            >
+              {firstImage ? (
+                <img
+                  src={firstImage.url}
+                  alt={product.productName}
+                  className="absolute inset-0 w-full h-full object-cover rounded-[8px]"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gray-700 rounded-[8px]" />
+              )}
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-[8px]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-[8px]" />
 
-            <div className="relative z-10 text-white">
-              <h3 className="font-inter font-semibold text-[16px] px-3 py-4 mb-1 truncate">
-                {product.productName}
-              </h3>
-
-              <div className="flex items-center justify-between px-3">
-                <div>
-                  {showDiscount ? (
-                    <>
-                      <p className="font-inter font-medium text-[12px]">
-                        ₦{product.discountedPrice.toLocaleString()}
-                      </p>
-                      <p className="font-inter font-normal text-[10px] line-through opacity-80 mt-[-2px]">
-                        ₦{product.formattedPrice.replace(/,/g, '')}
-                      </p>
-                    </>
-                  ) : (
-                    <p className="font-inter font-medium text-[12px]">
-                      ₦{product.formattedPrice}
-                    </p>
-                  )}
+              <div className="relative z-10 text-white">
+                <h3 className="font-inter font-semibold text-[16px] px-3 mb-1 truncate">
+                  {product.productName}
+                </h3>
+                <div className="flex items-center justify-between px-3">
+                  <div>
+                      <p className="font-inter font-medium text-[12px]">₦{formatPrice(product.price)}</p>
+                  </div>
+                  <img src="/product-star.svg" alt="Star" className="w-3 h-3" />
                 </div>
-                <img src="/product-star.svg" alt="Star" className="w-3 h-3" />
               </div>
             </div>
-          </div>
-        )
-      })}
-    </div>
-
-
+          )
+        })}
+      </div>
     </div>
   )
 }

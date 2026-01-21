@@ -2,7 +2,8 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSellerProfile } from "@/redux/slices/sellerProfileSlice";
-import SellerCategoryDropdown from "./SellerCategoryDropdown";
+import SellerCategoryDropdown from "../SellerCategoryDropdown";
+
 
 const ProfileInfoForm = forwardRef((props, ref) => {
   const dispatch = useDispatch();

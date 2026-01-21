@@ -7,7 +7,7 @@ export default function SellerCategoryDropdown({ selected, onSelect }) {
     "Men's Fashion", "Women's Fashion", "Unisex Fashion", "Fabrics & Materials",
     "Accessories", "Beauty & Personal Care",
     "Home & Lifestyle", "Gift Shops", "Kids Fashion",
-    "Art & Custom Crafts", "Kid's Fashion", "Electronics & Gadgets", "Baby & Maternity"
+    "Art & Custom Crafts", "Kid's Fashion", "Baby & Maternity"
   ];
 
   const [openModal, setOpenModal] = useState(false)

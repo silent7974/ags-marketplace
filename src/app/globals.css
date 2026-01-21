@@ -23,6 +23,20 @@
   display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+  scroll-behavior: smooth;   /* smooth scroll */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-240%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 12s linear infinite;
 }

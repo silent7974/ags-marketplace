@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
 import { updateSellerProfile } from "@/redux/slices/sellerProfileSlice"
-import ProfileInfoForm from "@/app/seller/components/ProfileInfoForm"
-import ProfilePictureForm from "@/app/seller/components/ProfilePictureForm"
-import ChangePasswordForm from "@/app/seller/components/ChangePasswordForm"
+import ProfileInfoForm from "@/app/seller/components/profile/ProfileInfoForm"
+import ProfilePictureForm from "@/app/seller/components/profile/ProfilePictureForm"
+import ChangePasswordForm from "@/app/seller/components/profile/ChangePasswordForm"
 import NotificationToggle from "@/app/seller/components/NotificationToggle"
-import DeleteAccountButton from "@/app/seller/components/DeleteAccountButton"
+import DeleteAccountButton from "@/app/seller/components/profile/DeleteAccountButton"
 
 async function uploadImageToCloudinary(file) {
   const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
@@ -64,9 +64,9 @@ export default function Page() {
 
   return (
     <div>
-      <div className="flex flex-col px-[16px]">
+      <div className="flex flex-col ">
         {/* Header */}
-        <header className="flex items-center justify-between px-4 py-[16px]">
+        <header className="flex items-center justify-between py-[16px]">
           <Link href="/seller/normal/dashboard" className="flex items-center">
             <ChevronLeft size={24} className="text-black/80" />
           </Link>

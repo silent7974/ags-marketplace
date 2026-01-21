@@ -8,7 +8,7 @@ export async function PATCH(req, context) {
 
   await dbConnect();
 
-  const { status } = await req.json();
+  const { status, orderStatus } = await req.json();
 
   try {
     const order = await Order.findById(id);
@@ -16,6 +16,7 @@ export async function PATCH(req, context) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
+    // Handle payment status updates (existing logic)
     if (status === "paid" && order.paymentStatus !== "paid") {
       for (const item of order.items) {
         const { productId, sku, quantity } = item;
@@ -23,26 +24,21 @@ export async function PATCH(req, context) {
         const product = await Product.findById(productId);
         if (!product) continue;
 
-        // ---------- BASE PRODUCT ----------
         if (String(product.sku).trim() === String(sku).trim()) {
-
           const newQty = Math.max((product.quantity || 0) - quantity, 0);
-
-          product.set("quantity", newQty);   // 🔥 FORCE MONGOOSE TO TRACK CHANGE
+          product.set("quantity", newQty);
 
           const parts = product.sku.split("-");
           parts[parts.length - 1] = String(newQty).padStart(2, "0");
-          product.set("sku", parts.join("-"));  // 🔥 USE set()
+          product.set("sku", parts.join("-"));
         }
 
-        // ---------- VARIANT PRODUCT ----------
         const variant = product.variantColumns?.find(
           v => String(v.sku).trim() === String(sku).trim()
         );
 
         if (variant) {
           const vNewQty = Math.max((variant.quantity || 0) - quantity, 0);
-
           variant.quantity = vNewQty;
 
           const vParts = variant.sku.split("-");
@@ -54,10 +50,17 @@ export async function PATCH(req, context) {
 
         await product.save();
       }
+
+      order.paymentStatus = "paid";
     }
 
-    order.paymentStatus = status;
+    // ✅ Handle order status updates (THIS IS WHAT YOU NEED)
+    if (orderStatus) {
+      order.orderStatus = orderStatus;
+    }
+
     await order.save();
+
 
     return NextResponse.json({ message: "Order updated", order }, { status: 200 });
 

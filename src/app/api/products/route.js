@@ -3,14 +3,18 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import dbConnect from "@/lib/mongodb";
 import Product from "@/models/product";
+import Seller from "@/models/seller";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// POST create a new product
+// ===============================
+// POST — Create product
+// ===============================
 export async function POST(req) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("sellerToken")?.value;
+    await dbConnect();
+
+    const token = await cookies().get("sellerToken")?.value;
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -22,80 +26,88 @@ export async function POST(req) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    // Parse incoming data exactly as frontend sends it
+    const seller = await Seller.findById(decoded.id).select("sellerType");
+    if (!seller) {
+      return NextResponse.json({ error: "Seller not found" }, { status: 404 });
+    }
+
+    const isPremium = seller.sellerType === "premium_seller";
+
     const data = await req.json();
 
     const {
       productName,
-      description,
+      description = "",
       price,
-      discountedPrice,
-      formattedPrice,
       quantity,
-      discount = 0,
       category,
       sku,
       subCategory = "",
       subType = "",
-      useCase = "",
-      tag = "",
-      trending = "",
-      variants = {}, // Keep as object if frontend sends object
+      variants = {},
       variantColumns = [],
       images = [],
+      adVideo = null,
     } = data;
 
-    // Basic required field checks
-    if (!productName || !subCategory || price == null || quantity == null || sku == null ) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!productName || !subCategory || price == null || quantity == null || sku == null) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     if (!Array.isArray(images) || images.length === 0) {
-      return NextResponse.json({ error: "At least one image is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "At least one image is required" },
+        { status: 400 }
+      );
     }
 
-    await dbConnect();
+    if (adVideo && !isPremium) {
+      return NextResponse.json(
+        { error: "Only premium sellers can upload product ads" },
+        { status: 403 }
+      );
+    }
 
-    const productDoc = {
+    const product = await Product.create({
       sellerId: decoded.id,
       productName: productName.trim(),
-      description: description?.trim() || "",
+      description: description.trim(),
       price,
-      formattedPrice,
-      discountedPrice,
       quantity,
-      discount,
       sku,
       category,
       subCategory,
       subType,
-      useCase,
-      tag,
-      trending,
-      variants, // save exactly as sent
+      variants,
       variantColumns,
       images,
-    };
-
-    console.log("SUBMITTING:", productDoc)
-
-    const created = await Product.create(productDoc);
+      ...(isPremium && adVideo ? { adVideo } : {}),
+    });
 
     return NextResponse.json(
-      { message: "Product added successfully", product: created },
-      { status: 201 },
+      { message: "Product added successfully", product },
+      { status: 201 }
     );
   } catch (err) {
-    console.error("Add Product Error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("POST /api/products error:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
-// GET seller's own products
+// ===============================
+// GET — Seller products
+// ===============================
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("sellerToken")?.value;
+    await dbConnect();
+
+    const token = await cookies().get("sellerToken")?.value;
     if (!token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -107,14 +119,13 @@ export async function GET() {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    await dbConnect();
-
-    // Fetch only products belonging to this seller
     const products = await Product.find({ sellerId: decoded.id });
-
     return NextResponse.json(products);
   } catch (err) {
-    console.error("Get Products Error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error("GET /api/products error:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

@@ -70,6 +70,7 @@ const initialState = {
   email: "",
   phone: "",
   category: "",
+  sellerType: "",
 
   // client-only UI fields
   notificationsEnabled: false,

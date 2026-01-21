@@ -1,59 +1,111 @@
-import Product from '@/models/product'
-import dbConnect from "@/lib/mongodb"
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
+import dbConnect from "@/lib/mongodb";
+import Product from "@/models/product";
+import Seller from "@/models/seller";
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// ===============================
+// GET — Single product
+// ===============================
 export async function GET(req, { params }) {
-  await dbConnect()
-  const { id } = await params
+  await dbConnect();
 
-  const product = await Product.findById(id)
+  const product = await Product.findById(params.id);
   if (!product) {
-    return new Response('Product not found', { status: 404 })
+    return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }
-  return new Response(JSON.stringify(product), { status: 200 })
+
+  return NextResponse.json(product);
 }
 
+// ===============================
+// PUT — Update product
+// ===============================
 export async function PUT(req, { params }) {
-  await dbConnect();
-  const { id } = await params
-
   try {
-    const body = await req.json()
+    await dbConnect();
 
-    // Find current product
-    const existingProduct = await Product.findById(id)
-    if (!existingProduct) {
-      return new Response(JSON.stringify({ message: "Product not found" }), { status: 404 });
+    const token = await cookies().get("sellerToken")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Compare old vs new — optional, but prevents unnecessary DB writes
-    const isSame = Object.keys(body).every(key => {
-      return JSON.stringify(existingProduct[key]) === JSON.stringify(body[key]);
-    });
-    if (isSame) {
-      return new Response(JSON.stringify({ message: "No changes detected" }), { status: 400 });
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
-    // Update and return new doc
-    const updatedProduct = await Product.findByIdAndUpdate(id, body, {
-      new: true, // return updated document
-      runValidators: true, // ensure schema validation
-    });
+    const seller = await Seller.findById(decoded.id).select("sellerType");
+    if (!seller) {
+      return NextResponse.json({ error: "Seller not found" }, { status: 404 });
+    }
 
-    return new Response(JSON.stringify(updatedProduct), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ message: error.message }), { status: 500 });
+    const product = await Product.findById(params.id);
+    if (!product || product.sellerId.toString() !== decoded.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    const body = await req.json();
+
+    if (body.adVideo && seller.sellerType !== "premium_seller") {
+      return NextResponse.json(
+        { error: "Only premium sellers can upload product ads" },
+        { status: 403 }
+      );
+    }
+
+    const updated = await Product.findByIdAndUpdate(
+      params.id,
+      body,
+      { new: true }
+    );
+
+    return NextResponse.json(updated);
+  } catch (err) {
+    console.error("PUT /api/products/[id] error:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
 
+// ===============================
+// DELETE — Delete product
+// ===============================
 export async function DELETE(req, { params }) {
-  await dbConnect();
-  const { id } = await params;
+  try {
+    await dbConnect();
 
-  const deletedProduct = await Product.findByIdAndDelete(id);
+    const token = await cookies().get("sellerToken")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  if (!deletedProduct) {
-    return new Response('Product not found', { status: 404 });
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    const product = await Product.findById(params.id);
+    if (!product || product.sellerId.toString() !== decoded.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
+    await product.deleteOne();
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("DELETE /api/products/[id] error:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
-
-  return new Response(JSON.stringify({ message: 'Product deleted successfully' }), { status: 200 });
 }

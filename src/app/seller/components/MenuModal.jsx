@@ -1,13 +1,34 @@
 'use client';
 
-import { X, Home, Package, Wallet, BarChart4, LifeBuoy, Settings, LogOut, Folders } from 'lucide-react'
+import {
+  X, Home, Package, Wallet, BarChart4,
+  LifeBuoy, Settings, LogOut, Folders, Store
+} from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
+import { useSelector } from "react-redux";
 
 export default function MenuModal({ onClose }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const menuItems = [
+  const seller = useSelector((state) => state.sellerProfile);
+
+  if (seller.status !== "succeeded") {
+    return null; // or a loader
+  }
+
+
+  const isPremium = seller?.sellerType === "premium_seller";
+
+  const menuItems = isPremium ? [
+    { name: 'Dashboard', icon: Home, path: '/seller/premium/dashboard' },
+    { name: 'Stores', icon: Store, path: '/seller/premium/dashboard/store' },
+    { name: 'My Products', icon: Folders, path: '/seller/premium/dashboard/products' },
+    { name: 'Orders', icon: Package, path: '/seller/premium/dashboard/orders' },
+    { name: 'Payments', icon: Wallet, path: '/seller/premium/dashboard/payments' },
+    { name: 'Performance', icon: BarChart4, path: '/seller/premium/dashboard/performance' },
+    { name: 'Help Center', icon: LifeBuoy, path: '/seller/premium/dashboard/help' },
+  ] : [
     { name: 'Dashboard', icon: Home, path: '/seller/normal/dashboard' },
     { name: 'My Products', icon: Folders, path: '/seller/normal/dashboard/products' },
     { name: 'Orders', icon: Package, path: '/seller/normal/dashboard/orders' },
@@ -17,7 +38,7 @@ export default function MenuModal({ onClose }) {
   ];
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-[188px] bg-[#005770] rounded-tr-[24px] py-[48px] px-[16px] z-50 flex flex-col justify-between transition-transform duration-300">
+    <div className="fixed top-0 left-0 h-screen w-[188px] bg-[#005770] rounded-tr-[24px] py-[48px] px-[16px] z-50 flex flex-col justify-between overflow-y-auto scrollbar-hide transition-transform duration-300">
       {/* Close Button */}
       <div className="flex justify-end mb-[16px]">
         <X size={16} color="#ffffff" onClick={onClose} className="cursor-pointer" />
@@ -64,7 +85,11 @@ export default function MenuModal({ onClose }) {
         {/* Settings */}
         <button
           onClick={() => {
-            router.push('/seller/normal/dashboard/settings');
+            router.push(
+              seller.sellerType === "premium_seller"
+                ? "/seller/premium/dashboard/settings"
+                : "/seller/normal/dashboard/settings"
+            );
             onClose();
           }}
           className="w-full flex items-center gap-[12px] py-[12px] text-white/60"

@@ -103,17 +103,6 @@ const productCategoryMap = {
     variants: {}
   },
 
-  "Electronics & Gadgets": {
-    categories: {
-      "Phones": ["Android", "iPhone"],
-      "Laptops": ["Windows Laptop", "MacBook"]
-    },
-    variants: {
-      memory: ["64GB", "128GB", "256GB", "512GB", "1TB"], // replaces size
-      ram: ["4GB", "8GB", "16GB", "32GB"]
-    }
-  },
-
   "Baby & Maternity": {
     categories: {
       "Baby Clothing": ["Bodysuit", "Rompers"],

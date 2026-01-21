@@ -1,4 +1,10 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+
+const AddressSchema = new mongoose.Schema({
+  city: { type: String, default: "Abuja" },
+  street: { type: String },
+  district: { type: String },
+});
 
 const SellerSchema = new mongoose.Schema(
   {
@@ -7,18 +13,34 @@ const SellerSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     passwordHash: { type: String, required: true },
     category: { type: String, required: true },
+
     profileImage: {
-      type: String, // store Cloudinary or S3 URL
-      default: "",  // blank until user uploads
+      type: String,
+      default: "",
     },
+
+    location: {
+      type: AddressSchema,
+      required: true,
+    },
+
+
     notificationsEnabled: {
       type: Boolean,
       default: false,
     },
-    sellerType: { type: String, enum: ["normal_seller", "premium_seller"], default: "normal_seller" }
+
+    sellerType: {
+      type: String,
+      enum: ["normal_seller", "premium_seller"],
+      default: "normal_seller",
+    },
+
+    // premium-only references
+    storeSlug: String,
+    brandName: String,
   },
   { timestamps: true }
 );
 
-// Prevent model overwrite in dev
 export default mongoose.models.Seller || mongoose.model("Seller", SellerSchema);

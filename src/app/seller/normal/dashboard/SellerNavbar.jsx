@@ -12,9 +12,9 @@ export default function SellerNavbar() {
   const firstName = fullName ? fullName.split(' ')[0] : "Seller";
 
   return (
-    <nav className="flex justify-between items-center pt-[48px]">
+    <nav className="flex justify-between items-center pt-[32px]">
       {/* Left Side */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1">
         <Image
           src="/ags-hamburger.svg"
           alt="Menu"
@@ -23,13 +23,13 @@ export default function SellerNavbar() {
           className="cursor-pointer"
           onClick={() => setIsMenuOpen(true)}
         />
-        <p className="text-[#005770] text-[20px] font-medium">
-          Welcome, {firstName}
+        <p className="text-[#005770] text-[18px] font-medium">
+          Hi, {firstName}
         </p>
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <Image
           src="/notification.svg"
           alt="Notification"

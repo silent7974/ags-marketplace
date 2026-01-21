@@ -1,5 +1,5 @@
 {
-  "name": "ags_marketplace",
+  "name": "malltiply",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -22,7 +22,10 @@
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "slugify": "^1.6.6",
+    "swiper": "^12.0.3",
+    "swiper-react": "^1.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

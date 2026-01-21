@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { ChevronDown, RulerDimensionLine } from 'lucide-react'
 import productCategoryMap from '@/lib/data/productCategoryMap'
@@ -164,12 +166,6 @@ export default function ProductFormFields({
   setSubType,
   variants = {},
   setVariants,
-  useCase,
-  setUseCase,
-  tag,
-  setTag,
-  trending,
-  setTrending,
   productData,           // ✅ we need productData here
   setProductData         // ✅ so we can update SKU
 }) {
@@ -272,34 +268,6 @@ export default function ProductFormFields({
             </div>
           )}
 
-          {v.memory && (
-            <CustomDropdown
-              label="Memory"
-              placeholder="Select memory"
-              options={v.memory}
-              selected={variants.memory || ''}
-              onSelect={(val) => {
-                const updated = { ...variants, memory: val }
-                setVariants(updated)
-                updateSKUWithVariants(updated)
-              }}
-            />
-          )}
-
-          {v.ram && (
-            <CustomDropdown
-              label="RAM"
-              placeholder="Select RAM"
-              options={v.ram}
-              selected={variants.ram || ''}
-              onSelect={(val) => {
-                const updated = { ...variants, ram: val }
-                setVariants(updated)
-                updateSKUWithVariants(updated)
-              }}
-            />
-          )}
-
           {v.colors && (
             <ColorDropdown
               selected={variants.color || ''}
@@ -310,85 +278,6 @@ export default function ProductFormFields({
               }}
             />
           )}
-          
-          {/* Use Case */}
-          <CustomDropdown
-            label="Use Case"
-            placeholder="Select use case"
-            options={[
-              'Casual Outings',
-              'Office Wear',
-              'Weddings & Events',
-              'Traditional Occasions',
-              'Religious Gatherings',
-              'Everyday Wear',
-              'Sports & Fitness',
-              'Travel & Holidays',
-              'Gifting',
-              'Home Decoration',
-              'Baby & Toddler Essentials',
-              'School & Education',
-              'Farming & Agriculture',
-              'Tech Work & Gadgets',
-            ]}
-            selected={useCase}
-            onSelect={setUseCase}
-          />
-
-          {/* Tags */}
-          <CustomDropdown
-            label="Tags"
-            placeholder="Select tag"
-            options={[
-              'Hausa Style',
-              'Arewa Bride',
-              'Arewa Groom',
-              'Ankara',
-              'Atamfa',
-              'Kaftan',
-              'Jallabiya',
-              'Agbada',
-              'Kente',
-              'Aso Ebi',
-              'Chiffon',
-              'Adire',
-              'Beads & Jewelry',
-              'Modest Fashion',
-              'Streetwear NG',
-              'Local Made',
-              'Handmade NG',
-              'Eco-friendly',
-              'Premium Quality',
-              'Budget-friendly',
-            ]}
-            selected={tag}
-            onSelect={setTag}
-          />
-
-          {/* Trending */}
-          <CustomDropdown
-            label="Trending"
-            placeholder="Select trending"
-            options={[
-              'Eid Collection',
-              'Sallah Special',
-              'Ramadan Essentials',
-              'Arewa Weddings',
-              'Fresh Ankara Drops',
-              'Back to School',
-              'New Tech Gadgets',
-              'Streetwear Wave',
-              'Skincare Glow',
-              'Foodie Finds',
-              'Home Makeover',
-              'Baby Shower Picks',
-              'Bridal Showers',
-              'Valentine Specials',
-              'Independence Day Sale',
-            ]}
-            selected={trending}
-            onSelect={setTrending}
-          />
         </div>
       )}
       {/* 🔥 Size Guide Modal Placeholder */}
